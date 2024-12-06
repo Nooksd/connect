@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "554862906043",
+    "project_id": "connect-45402",
+    "storage_bucket": "connect-45402.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554862906043:android:257035961c103294d0779e",
+        "android_client_info": {
+          "package_name": "br.com.innova_energy.connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTMZvJ4TJ2DATuZfd5itey2l5ihyW67WA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
