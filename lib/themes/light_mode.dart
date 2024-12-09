@@ -43,7 +43,7 @@ ThemeData lightMode = ThemeData(
     ),
   ),
   scaffoldBackgroundColor: Colors.white,
-  fontFamily: "inter",
+  fontFamily: "Inter",
   iconTheme: const IconThemeData(
     color: Color(0xFF2257A8),
   ),

@@ -4,6 +4,8 @@ import 'package:connect/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/features/auth/presentation/cubits/auth_states.dart';
 import 'package:connect/features/auth/presentation/pages/login_page.dart';
 import 'package:connect/features/navigation/presentation/pages/navigator_page.dart';
+import 'package:connect/features/profile/data/firebase_profile_repo.dart';
+import 'package:connect/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:connect/router/router.dart';
 import 'package:connect/themes/light_mode.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyApp extends StatelessWidget {
   final authRepo = FirebaseAuthRepo();
+
+  final profileRepo = FirebaseProfileRepo();
 
   MyApp({super.key});
 
@@ -25,8 +29,13 @@ class MyApp extends StatelessWidget {
     ));
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    return BlocProvider(
-      create: (context) => AuthCubit(authRepo: authRepo),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(authRepo: authRepo)),
+        BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(profileRepo: profileRepo))
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Connect',

@@ -1,5 +1,6 @@
 import 'package:connect/features/Navigation/presentation/components/custom_navigation_destination.dart';
 import 'package:connect/features/Navigation/presentation/components/custom_appbar.dart';
+import 'package:connect/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/features/explorer/presentation/pages/explore_page.dart';
 import 'package:connect/features/missions/presentation/pages/missions_page.dart';
 import 'package:connect/features/profile/presentation/pages/profile_page.dart';
@@ -7,6 +8,7 @@ import 'package:connect/features/post/presentation/pages/feed_page.dart';
 import 'package:connect/features/post/presentation/pages/post_page.dart';
 import 'package:connect/custom/custom_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({super.key});
@@ -25,19 +27,19 @@ class _NavigatorPageState extends State<NavigatorPage> {
   bool isFirstPage = true;
   int _selectedIndex = 0;
 
-  final List _pages = [
-    const FeedPage(),
-    const MissionsPage(),
-    const PostPage(),
-    const ExplorePage(),
-    const ProfilePage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List pages = [
+      const FeedPage(),
+      const MissionsPage(),
+      const PostPage(),
+      const ExplorePage(),
+      ProfilePage(uid: context.read<AuthCubit>().currentUser!.uid),
+    ];
+
     return Scaffold(
       appBar: CustomAppBar(selectedIndex: _selectedIndex),
-      body: _pages[_selectedIndex],
+      body: pages[_selectedIndex],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
         child: NavigationBarTheme(
