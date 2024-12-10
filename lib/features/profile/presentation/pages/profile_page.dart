@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect/features/profile/presentation/components/data_tile.dart';
 import 'package:connect/features/profile/presentation/components/points_tile.dart';
+import 'package:connect/features/profile/presentation/components/social_tile.dart';
 import 'package:connect/features/profile/presentation/cubits/profile_states.dart';
 import 'package:connect/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:connect/features/auth/presentation/cubits/auth_cubit.dart';
@@ -41,120 +41,151 @@ class _ProfilePageState extends State<ProfilePage> {
           final user = state.profileUser;
 
           return Scaffold(
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Center(
-                  child: Column(
+            body: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 115,
+                          height: 115,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(1000),
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          user.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          user.position,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        width: 115,
-                        height: 115,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1000),
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
+                      PointsTile(
+                        icon: const Icon(CustomIcons.medal, size: 25),
+                        title: "Pontos ganhos",
+                        number: user.pTotal.toString(),
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        user.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      PointsTile(
+                        icon: const Icon(CustomIcons.prize, size: 22),
+                        title: "Pontos gastos",
+                        number: user.pSpent.toString(),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        user.position,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.italic,
-                        ),
+                      PointsTile(
+                        icon: SvgPicture.asset('assets/coin.svg', width: 25),
+                        title: "Pontos Atuais",
+                        number: user.pCurrent.toString(),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    PointsTile(
-                      icon: const Icon(CustomIcons.medal, size: 25),
-                      title: "Pontos ganhos",
-                      number: user.pTotal.toString(),
-                    ),
-                    PointsTile(
-                      icon: const Icon(CustomIcons.prize, size: 22),
-                      title: "Pontos gastos",
-                      number: user.pSpent.toString(),
-                    ),
-                    PointsTile(
-                      icon: SvgPicture.asset('assets/coin.svg', width: 25),
-                      title: "Pontos Atuais",
-                      number: user.pCurrent.toString(),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                const Center(
-                  child: Text("Dados"),
-                ),
-                const SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: [
-                            DataTile(
-                              icon: const Icon(CustomIcons.email, size: 17),
-                              title: "Email",
-                              number: user.email,
-                            ),
-                            const SizedBox(height: 35),
-                            DataTile(
-                              icon: const Icon(CustomIcons.role, size: 17),
-                              title: "Cargo",
-                              number: user.position,
-                            ),
-                            const SizedBox(height: 35),
-                            DataTile(
-                              icon: const Icon(CustomIcons.cake, size: 22),
-                              title: "Data de nascimento",
-                              number: DateFormat("d 'de' MMMM", 'pt_BR')
-                                  .format(user.birthday.toDate()),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: [
-                            DataTile(
-                              icon: const Icon(CustomIcons.phone, size: 19),
-                              title: "Telefone",
-                              number: user.phoneNumber,
-                            ),
-                            const SizedBox(height: 35),
-                            DataTile(
-                              icon: const Icon(CustomIcons.date, size: 20),
-                              title: "Data de admissão",
-                              number: DateFormat('dd/MM/yyyy')
-                                  .format(user.entryDate.toDate()),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  const SizedBox(height: 25),
+                  const Center(
+                    child: Text("Dados"),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              DataTile(
+                                icon: const Icon(CustomIcons.email, size: 17),
+                                title: "Email",
+                                number: user.email,
+                              ),
+                              const SizedBox(height: 30),
+                              DataTile(
+                                icon: const Icon(CustomIcons.role, size: 17),
+                                title: "Cargo",
+                                number: user.position,
+                              ),
+                              const SizedBox(height: 30),
+                              DataTile(
+                                icon: const Icon(CustomIcons.cake, size: 22),
+                                title: "Data de nascimento",
+                                number: DateFormat("d 'de' MMMM", 'pt-BR')
+                                    .format(user.birthday.toDate()),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              DataTile(
+                                icon: const Icon(CustomIcons.phone, size: 19),
+                                title: "Telefone",
+                                number: user.phoneNumber,
+                              ),
+                              const SizedBox(height: 30),
+                              DataTile(
+                                icon: const Icon(CustomIcons.date, size: 20),
+                                title: "Data de admissão",
+                                number: DateFormat('dd/MM/yyyy')
+                                    .format(user.entryDate.toDate()),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  const Center(
+                    child: Text("Redes Sociais"),
+                  ),
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      children: [
+                        SocialTile(
+                          icon: const Icon(CustomIcons.linkedin, size: 20),
+                          title: "LinkedIn",
+                          text: user.linkedinUrl,
+                        ),
+                        const SizedBox(height: 30),
+                        SocialTile(
+                          icon: const Icon(CustomIcons.facebook, size: 20),
+                          title: "Facebook",
+                          text: user.facebookUrl,
+                        ),
+                        const SizedBox(height: 30),
+                        SocialTile(
+                          icon: const Icon(CustomIcons.instagram, size: 20),
+                          title: "Instagram",
+                          text: user.instagramUrl,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         } else if (state is ProfileLoading) {

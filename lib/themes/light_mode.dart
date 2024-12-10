@@ -4,7 +4,10 @@ ThemeData lightMode = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
   appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    elevation: 0,
+    scrolledUnderElevation: 0,
   ),
   colorScheme: const ColorScheme.light(
     primary: Color(0xFF2257A8),

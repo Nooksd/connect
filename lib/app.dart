@@ -11,6 +11,7 @@ import 'package:connect/themes/light_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MyApp extends StatelessWidget {
   final authRepo = FirebaseAuthRepo();
@@ -37,6 +38,12 @@ class MyApp extends StatelessWidget {
             create: (context) => ProfileCubit(profileRepo: profileRepo))
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('pt', 'BR')],
         debugShowCheckedModeBanner: false,
         title: 'Connect',
         home: BlocConsumer<AuthCubit, AuthState>(

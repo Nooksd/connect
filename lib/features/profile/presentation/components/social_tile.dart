@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class DataTile extends StatelessWidget {
+class SocialTile extends StatelessWidget {
   final dynamic icon;
   final String title;
-  final String number;
+  final String text;
 
-  const DataTile({
+  const SocialTile({
     super.key,
     required this.icon,
     required this.title,
-    required this.number,
+    required this.text,
   });
 
   @override
@@ -28,13 +28,18 @@ class DataTile extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Text(
-              number,
-              style: const TextStyle(
-                fontSize: 11,
-                fontFamily: "Inter",
+            SizedBox(
+              width: 300,
+              child: Text(
+                text,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontFamily: "Inter",
+                ),
               ),
-            ),
+            )
           ],
         )
       ],

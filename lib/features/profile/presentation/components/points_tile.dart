@@ -21,7 +21,10 @@ class PointsTile extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title),
+            SizedBox(
+              height: 16,
+              child: Text(title),
+            ),
             Text(
               number,
               style: const TextStyle(
@@ -29,7 +32,7 @@ class PointsTile extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontFamily: "Inter",
               ),
-            )
+            ),
           ],
         )
       ],

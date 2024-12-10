@@ -7,7 +7,7 @@ class ProfileSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: CustomAppBar(selectedIndex: 5),
+      appBar: CustomAppBar(selectedIndex: 5, title: 'Editar Perfil'),
     );
   }
 }
