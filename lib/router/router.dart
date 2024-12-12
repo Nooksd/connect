@@ -20,7 +20,7 @@ PageRouteBuilder generateRoute(RouteSettings settings) {
       builder = (BuildContext context) => const ThemeSettingsPage();
       break;
     case '/settings/profile':
-      builder = (BuildContext context) => const ProfileSettingsPage();
+      builder = (BuildContext context) => ProfileSettingsPage();
       break;
     case '/settings/suport':
       builder = (BuildContext context) => const NotificationsSettingsPage();
