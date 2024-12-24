@@ -7,7 +7,7 @@ class ProfileUser extends AppUser {
 
   final String profilePictureUrl;
   final String phoneNumber;
-  final String position;
+  final String role;
   final DateTime entryDate;
   final DateTime birthday;
 
@@ -24,7 +24,7 @@ class ProfileUser extends AppUser {
     required this.pCurrent,
     required this.profilePictureUrl,
     required this.phoneNumber,
-    required this.position,
+    required this.role,
     required this.entryDate,
     required this.birthday,
     required this.linkedinUrl,
@@ -42,7 +42,7 @@ class ProfileUser extends AppUser {
       pCurrent: newPCurrent ?? pCurrent,
       profilePictureUrl: profilePictureUrl,
       phoneNumber: phoneNumber,
-      position: position,
+      role: role,
       entryDate: entryDate,
       birthday: birthday,
       linkedinUrl: linkedinUrl,
@@ -66,7 +66,7 @@ class ProfileUser extends AppUser {
       pCurrent: pCurrent,
       profilePictureUrl: newProfilePictureUrl ?? profilePictureUrl,
       phoneNumber: phoneNumber,
-      position: position,
+      role: role,
       entryDate: entryDate,
       birthday: birthday,
       linkedinUrl: newLinkedinUrl ?? linkedinUrl,
@@ -84,7 +84,7 @@ class ProfileUser extends AppUser {
       'pCurrent': pCurrent,
       'profilePictureUrl': profilePictureUrl,
       'phoneNumber': phoneNumber,
-      'position': position,
+      'role': role,
       'entryDate': entryDate,
       'birthday': birthday,
       'linkedinUrl': linkedinUrl,
@@ -103,7 +103,7 @@ class ProfileUser extends AppUser {
       pCurrent: json['pCurrent'] ?? 0,
       profilePictureUrl: json['profilePictureUrl'] ?? '',
       phoneNumber: json['phoneNumber'] ?? '',
-      position: json['position'] ?? '',
+      role: json['role'] ?? '',
       entryDate: json['entryDate'],
       birthday: json['birthday'],
       linkedinUrl: json['linkedinUrl'] ?? '',
@@ -111,4 +111,24 @@ class ProfileUser extends AppUser {
       facebookUrl: json['facebookUrl'] ?? '',
     );
   }
+
+factory ProfileUser.fromMap(Map<String, dynamic> map) {
+  return ProfileUser(
+    uid: map['uid'] ?? '',  
+    email: map['email'] ?? '',
+    name: map['name'] ?? '',
+    pTotal: map['pTotal'] ?? 0,
+    pSpent: map['pSpent'] ?? 0,
+    pCurrent: map['pCurrent'] ?? 0,
+    profilePictureUrl: map['profilePictureUrl'] ?? '',
+    phoneNumber: map['phoneNumber'] ?? '',
+    role: map['role'] ?? '',
+    entryDate: DateTime.tryParse(map['entryDate'] ?? '') ?? DateTime.now(),
+    birthday: DateTime.tryParse(map['birthday'] ?? '') ?? DateTime.now(),
+    linkedinUrl: map['linkedinUrl'] ?? '',
+    instagramUrl: map['instagramUrl'] ?? '',
+    facebookUrl: map['facebookUrl'] ?? '',
+  );
+}
+
 }

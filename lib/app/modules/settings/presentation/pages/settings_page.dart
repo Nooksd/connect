@@ -17,8 +17,6 @@ class SettingsPage extends StatelessWidget {
     void navigateToProfile() {
       final user = context.read<AuthCubit>().currentUser;
 
-      print(user?.uid);
-
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Usuário não encontrado!')),

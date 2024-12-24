@@ -22,6 +22,21 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  Future<void> getSelfProfile() async {
+    try {
+      emit(ProfileLoading());
+      final user = await profileRepo.getSelfProfile();
+
+      if (user != null) {
+        emit(ProfileLoaded(user));
+      } else {
+        emit(ProfileError("Usuário não encontrado"));
+      }
+    } catch (e) {
+      emit(ProfileError(e.toString()));
+    }
+  }
+
   Future<void> updateProfile({
     required String uid,
     String? newProfilePictureUrl,

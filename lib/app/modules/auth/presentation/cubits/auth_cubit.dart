@@ -12,8 +12,6 @@ class AuthCubit extends Cubit<AuthState> {
   void checkAuth() async {
     final AppUser? user = await authRepo.getCurrentUser();
 
-    print(user != null);
-
     if (user != null) {
       _currentUser = user;
       emit(Authenticated(user));

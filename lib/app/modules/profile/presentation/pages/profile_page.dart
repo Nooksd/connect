@@ -12,9 +12,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String uid;
+  final String? uid;
 
-  const ProfilePage({super.key, required this.uid});
+  const ProfilePage({super.key, this.uid});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -30,7 +30,11 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
 
-    profileCubit.fetchUserProfile(widget.uid);
+    if (widget.uid?.isEmpty ?? true) {
+      profileCubit.getSelfProfile();
+    } else {
+      profileCubit.fetchUserProfile(widget.uid!);
+    }
   }
 
   @override
@@ -66,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          user.position,
+                          user.role,
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
@@ -121,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               DataTile(
                                 icon: const Icon(CustomIcons.role, size: 17),
                                 title: "Cargo",
-                                number: user.position,
+                                number: user.role,
                               ),
                               const SizedBox(height: 30),
                               DataTile(
@@ -157,7 +161,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 30),
                   const Center(
-                    child: Text("Redes Sociais", style: TextStyle(fontSize: 16)),
+                    child:
+                        Text("Redes Sociais", style: TextStyle(fontSize: 16)),
                   ),
                   const SizedBox(height: 15),
                   Padding(

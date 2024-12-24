@@ -1,4 +1,3 @@
-import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/app/modules/explorer/presentation/pages/explore_page.dart';
 import 'package:connect/app/modules/missions/presentation/pages/missions_page.dart';
 import 'package:connect/app/modules/navigation/presentation/components/custom_appbar.dart';
@@ -8,7 +7,6 @@ import 'package:connect/app/modules/post/presentation/pages/feed_page.dart';
 import 'package:connect/app/modules/post/presentation/pages/post_page.dart';
 import 'package:connect/app/core/custom/custom_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({super.key});
@@ -34,7 +32,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
       const MissionsPage(),
       const PostPage(),
       const ExplorePage(),
-      ProfilePage(uid: context.read<AuthCubit>().currentUser!.uid),
+      const ProfilePage(),
     ];
 
     return Scaffold(

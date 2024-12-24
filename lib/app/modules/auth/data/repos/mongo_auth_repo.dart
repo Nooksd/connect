@@ -14,18 +14,24 @@ class MongoAuthRepo implements AuthRepo {
   Future<AppUser?> loginWithEmailPassword(String email, String password) async {
     try {
       final response = await authApiService.login(email, password);
-      final newAccessToken = response['access_token'];
-      final newRefreshToken = response['refresh_token'];
-      final userData = response['user'];
 
-      await authStorageService.saveAuthData(
-          newAccessToken, newRefreshToken, userData);
+      if (response['status'] == 200) {
+        final data = response['data'];
 
-      return AppUser.fromMap({
-        'access_token': newAccessToken,
-        'refresh_token': newRefreshToken,
-        'user': userData,
-      });
+        final newAccessToken = data['accessToken'];
+        final newRefreshToken = data['refreshToken'];
+        final userData = data['user'];
+
+        await authStorageService.saveAuthData(
+            newAccessToken, newRefreshToken, userData);
+
+        return AppUser.fromMap({
+          'name': userData['name'],
+          'email': userData['email'],
+          'id': userData['id'],
+        });
+      }
+      return null;
     } catch (e) {
       throw Exception('Failed to login: $e');
     }
@@ -34,31 +40,16 @@ class MongoAuthRepo implements AuthRepo {
   @override
   Future<AppUser?> getCurrentUser() async {
     try {
-      final accessToken = await authStorageService.getAccessToken();
-      if (accessToken != null) {
-        final user = await authStorageService.getUser();
-        return AppUser.fromMap({
-          'access_token': accessToken,
-          'refresh_token': await authStorageService.getRefreshToken(),
-          'user': user,
-        });
-      }
-
       final response = await authApiService.getCurrentUser();
 
-
-      if (response == null) {
-        final newAccessToken = response['access_token']; 
-        final newRefreshToken = response['refresh_token'];
-        final userData = response['user'];
-
-        await authStorageService.saveAuthData(
-            newAccessToken, newRefreshToken, userData);
+      if (response['status'] == 200) {
+        final data = response['data'];
+        final userData = data['user'];
 
         return AppUser.fromMap({
-          'access_token': newAccessToken,
-          'refresh_token': newRefreshToken,
-          'user': userData,
+          'name': userData['Name'],
+          'email': userData['Email'],
+          'id': userData['Uid'],
         });
       }
       return null;
