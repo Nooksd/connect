@@ -7,8 +7,11 @@ class AuthStorageService {
 
   AuthStorageService({required this.localStorage});
 
-  Future<void> saveAuthData(String accessToken, String refreshToken,
-      Map<String, dynamic> user) async {
+  Future<void> saveAuthData(
+    String accessToken,
+    String refreshToken,
+    Map<String, dynamic> user,
+  ) async {
     await localStorage.set('accessToken', accessToken);
     await localStorage.set('refreshToken', refreshToken);
     await localStorage.set('user', jsonEncode(user));
@@ -22,14 +25,14 @@ class AuthStorageService {
     return await localStorage.get('refreshToken');
   }
 
-Future<Map<String, dynamic>?> getUser() async {
-  final userJson = await localStorage.get('user');
-  
-  if (userJson != null) {
-    return jsonDecode(userJson) as Map<String, dynamic>;
+  Future<Map<String, dynamic>?> getUser() async {
+    final userJson = await localStorage.get('user');
+
+    if (userJson != null) {
+      return jsonDecode(userJson) as Map<String, dynamic>;
+    }
+    return null;
   }
-  return null;
-}
 
   Future<void> clearAuthData() async {
     await localStorage.remove('accessToken');

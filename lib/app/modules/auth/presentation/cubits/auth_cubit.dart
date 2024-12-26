@@ -2,6 +2,7 @@ import 'package:connect/app/modules/auth/domain/entities/app_user.dart';
 import 'package:connect/app/modules/auth/domain/repos/auth_repo.dart';
 import 'package:connect/app/modules/auth/presentation/cubits/auth_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepo;
@@ -32,6 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
         _currentUser = user;
         emit(Authenticated(user));
       } else {
+        emit(AuthError("Email ou senha incorretos"));
         emit(Unauthenticated());
       }
     } catch (e) {
@@ -44,5 +46,6 @@ class AuthCubit extends Cubit<AuthState> {
     await authRepo.logout();
     _currentUser = null;
     emit(Unauthenticated());
+    Modular.to.pushReplacementNamed('/');
   }
 }

@@ -3,7 +3,7 @@ import 'package:connect/app/modules/navigation/presentation/components/custom_ap
 import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/app/modules/settings/presentation/components/setting_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -12,7 +12,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void navigateToTheme() => Navigator.pushNamed(context, '/settings/theme');
+    void navigateToTheme() => Modular.to.pushNamed("/settings/theme");
 
     void navigateToProfile() {
       final user = context.read<AuthCubit>().currentUser;
@@ -24,15 +24,14 @@ class SettingsPage extends StatelessWidget {
         return;
       }
 
-      Navigator.pushNamed(
-        context,
+      Modular.to.pushNamed(
         '/settings/profile',
         arguments: user,
       );
     }
 
     void navigateToNotifications() =>
-        Navigator.pushNamed(context, '/settings/theme');
+        Modular.to.pushNamed('/settings/notifications');
 
     void logout() => context.read<AuthCubit>().logout();
 

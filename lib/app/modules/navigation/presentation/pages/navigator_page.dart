@@ -1,12 +1,8 @@
-import 'package:connect/app/modules/explorer/presentation/pages/explore_page.dart';
-import 'package:connect/app/modules/missions/presentation/pages/missions_page.dart';
 import 'package:connect/app/modules/navigation/presentation/components/custom_appbar.dart';
 import 'package:connect/app/modules/navigation/presentation/components/custom_navigation_destination.dart';
-import 'package:connect/app/modules/profile/presentation/pages/profile_page.dart';
-import 'package:connect/app/modules/post/presentation/pages/feed_page.dart';
-import 'package:connect/app/modules/post/presentation/pages/post_page.dart';
 import 'package:connect/app/core/custom/custom_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({super.key});
@@ -16,28 +12,34 @@ class NavigatorPage extends StatefulWidget {
 }
 
 class _NavigatorPageState extends State<NavigatorPage> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateBottomBar(0);
+  }
+
+  int _selectedIndex = 0;
+
+  final List<String> _routes = [
+    '/navigator/feed',
+    '/navigator/missions',
+    '/navigator/post',
+    '/navigator/explore',
+    '/navigator/profile',
+  ];
+
   void _navigateBottomBar(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    Modular.to.navigate(_routes[index]);
   }
-
-  bool isFirstPage = true;
-  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final List pages = [
-      const FeedPage(),
-      const MissionsPage(),
-      const PostPage(),
-      const ExplorePage(),
-      const ProfilePage(),
-    ];
-
     return Scaffold(
       appBar: CustomAppBar(selectedIndex: _selectedIndex),
-      body: pages[_selectedIndex],
+      body: const RouterOutlet(),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
         child: NavigationBarTheme(

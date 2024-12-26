@@ -9,6 +9,9 @@ ThemeData lightMode = ThemeData(
     elevation: 0,
     scrolledUnderElevation: 0,
   ),
+  snackBarTheme: const SnackBarThemeData(
+    backgroundColor: Color(0xFF2257A8),
+  ),
   colorScheme: const ColorScheme.light(
     primary: Color(0xFF2257A8),
     primaryContainer: Color(0xFFF6F8FD),
@@ -17,7 +20,7 @@ ThemeData lightMode = ThemeData(
     secondary: Color(0xFFB0D159),
     error: Color(0xFFFDD9D7),
     onError: Color(0xFFF44336),
-    surface: Color(0xFFFFFFFF), 
+    surface: Color(0xFFFFFFFF),
     onSurface: Color(0xFF172242),
   ),
   textTheme: const TextTheme(

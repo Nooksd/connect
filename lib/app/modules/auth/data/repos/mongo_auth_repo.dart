@@ -47,9 +47,9 @@ class MongoAuthRepo implements AuthRepo {
         final userData = data['user'];
 
         return AppUser.fromMap({
-          'name': userData['Name'],
-          'email': userData['Email'],
-          'id': userData['Uid'],
+          'name': userData['name'],
+          'email': userData['email'],
+          'id': userData['id'],
         });
       }
       return null;

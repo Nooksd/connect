@@ -1,14 +1,19 @@
+// import 'package:connect/app/modules/profile/data/source/profile_api_service.dart';
+import 'dart:convert';
+
 import 'package:connect/app/modules/profile/data/source/profile_api_service.dart';
 import 'package:connect/app/modules/profile/data/source/profile_storage_service.dart';
 import 'package:connect/app/modules/profile/domain/entities/profile_user.dart';
 import 'package:connect/app/modules/profile/domain/repos/profile_repo.dart';
 
 class MongoProfileRepo implements ProfileRepo {
-  final ProfileApiService authApiService;
-  final ProfileStorageService authStorageService;
+  final ProfileApiService profileApiService;
+  final ProfileStorageService profileStorageService;
 
-  MongoProfileRepo(
-      {required this.authApiService, required this.authStorageService});
+  MongoProfileRepo({
+    required this.profileApiService,
+    required this.profileStorageService,
+  });
 
   @override
   Future<ProfileUser?> fetchUserProfile(String uid) async {
@@ -23,8 +28,7 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<void> updateUserProfile(ProfileUser updatedProfileUser) async {
     try {
-      //  TODO: implement
-      throw UnimplementedError();
+      await profileApiService.updateUser(updatedProfileUser);
     } catch (e) {
       throw Exception(e);
     }
@@ -43,8 +47,15 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> getSelfProfile() async {
     try {
-      // TODO: implement
-      throw UnimplementedError();
+      final user = await profileStorageService.getUser();
+
+      if (user == null) {
+        return null;
+      }
+
+      final data = jsonDecode(user);
+
+      return ProfileUser.fromMap(data);
     } catch (e) {
       throw Exception(e);
     }

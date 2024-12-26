@@ -85,8 +85,8 @@ class ProfileUser extends AppUser {
       'profilePictureUrl': profilePictureUrl,
       'phoneNumber': phoneNumber,
       'role': role,
-      'entryDate': entryDate,
-      'birthday': birthday,
+      'entryDate': entryDate.toIso8601String(),
+      'birthday': birthday.toIso8601String(),
       'linkedinUrl': linkedinUrl,
       'instagramUrl': instagramUrl,
       'facebookUrl': facebookUrl,
@@ -104,31 +104,30 @@ class ProfileUser extends AppUser {
       profilePictureUrl: json['profilePictureUrl'] ?? '',
       phoneNumber: json['phoneNumber'] ?? '',
       role: json['role'] ?? '',
-      entryDate: json['entryDate'],
-      birthday: json['birthday'],
+      entryDate: json['entryDate'] ?? '',
+      birthday: json['birthday'] ?? '',
       linkedinUrl: json['linkedinUrl'] ?? '',
       instagramUrl: json['instagramUrl'] ?? '',
       facebookUrl: json['facebookUrl'] ?? '',
     );
   }
 
-factory ProfileUser.fromMap(Map<String, dynamic> map) {
-  return ProfileUser(
-    uid: map['uid'] ?? '',  
-    email: map['email'] ?? '',
-    name: map['name'] ?? '',
-    pTotal: map['pTotal'] ?? 0,
-    pSpent: map['pSpent'] ?? 0,
-    pCurrent: map['pCurrent'] ?? 0,
-    profilePictureUrl: map['profilePictureUrl'] ?? '',
-    phoneNumber: map['phoneNumber'] ?? '',
-    role: map['role'] ?? '',
-    entryDate: DateTime.tryParse(map['entryDate'] ?? '') ?? DateTime.now(),
-    birthday: DateTime.tryParse(map['birthday'] ?? '') ?? DateTime.now(),
-    linkedinUrl: map['linkedinUrl'] ?? '',
-    instagramUrl: map['instagramUrl'] ?? '',
-    facebookUrl: map['facebookUrl'] ?? '',
-  );
-}
-
+  factory ProfileUser.fromMap(Map<String, dynamic> map) {
+    return ProfileUser(
+      uid: map['uid'] ?? '',
+      email: map['email'] ?? '',
+      name: map['name'] ?? '',
+      pTotal: map['pTotal'] ?? 0,
+      pSpent: map['pSpent'] ?? 0,
+      pCurrent: map['pCurrent'] ?? 0,
+      profilePictureUrl: map['profilePictureUrl'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
+      role: map['role'] ?? '',
+      entryDate: map['entryDate'] ?? DateTime.now(),
+      birthday: map['birthday'] ?? DateTime.now(),
+      linkedinUrl: map['linkedinUrl'] ?? '',
+      instagramUrl: map['instagramUrl'] ?? '',
+      facebookUrl: map['facebookUrl'] ?? '',
+    );
+  }
 }

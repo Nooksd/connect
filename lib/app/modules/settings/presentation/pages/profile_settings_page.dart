@@ -26,7 +26,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     final profileCubit = context.read<ProfileCubit>();
 
     profileCubit.updateProfile(
-      uid: widget.user.uid,
       newFacebookUrl: facebookController.text,
       newLinkedinUrl: linkedinController.text,
       newInstagramUrl: instagramController.text,
@@ -63,6 +62,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
   Widget buildProfileConfigPage() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const CustomAppBar(selectedIndex: 5, title: 'Editar Perfil'),
       body: Stack(
         children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:connect/app/core/custom/custom_icons.dart';
 
@@ -22,7 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         const Text("Olá, João Victor"),
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/notifications');
+            Modular.to.pushNamed('/notifications');
           },
           icon: const Icon(CustomIcons.notifications, size: 17),
         ),
@@ -30,7 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       1: [
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/market');
+            Modular.to.pushNamed('/market');
           },
           icon: const Icon(CustomIcons.buy),
         ),
@@ -41,7 +42,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       4: [
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/settings');
+            Modular.to.pushNamed('/settings');
           },
           icon: const Icon(CustomIcons.settings),
         ),
@@ -49,7 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       5: [
         GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Modular.to.pop(context);
           },
           child: Container(
             width: 40,

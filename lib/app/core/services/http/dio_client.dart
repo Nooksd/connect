@@ -73,6 +73,9 @@ class DioClient implements MyHttpClient {
   Future<dynamic> post(String url, {dynamic data}) async {
     try {
       final response = await dio.post(url, data: data);
+    
+      print("resposta: $response");
+
       return {
         "data": response.data,
         "status": response.statusCode,

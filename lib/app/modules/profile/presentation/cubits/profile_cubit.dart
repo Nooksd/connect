@@ -38,7 +38,6 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> updateProfile({
-    required String uid,
     String? newProfilePictureUrl,
     String? newFacebookUrl,
     String? newInstagramUrl,
@@ -47,7 +46,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
 
     try {
-      final currentUser = await profileRepo.fetchUserProfile(uid);
+      final currentUser = await profileRepo.getSelfProfile();
 
       if (currentUser == null) {
         emit(ProfileError('Falha ao atualizar perfil'));
@@ -62,7 +61,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       await profileRepo.updateUserProfile(updatedProfile);
 
-      await fetchUserProfile(uid);
+      await getSelfProfile();
     } catch (e) {
       emit(ProfileError(e.toString()));
     }

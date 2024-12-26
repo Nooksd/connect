@@ -3,8 +3,6 @@ import 'package:connect/app/modules/profile/presentation/components/points_tile.
 import 'package:connect/app/modules/profile/presentation/components/social_tile.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_states.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_cubit.dart';
-import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
-import 'package:connect/app/modules/auth/domain/entities/app_user.dart';
 import 'package:connect/app/core/custom/custom_icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +19,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late final authCubit = context.read<AuthCubit>();
   late final profileCubit = context.read<ProfileCubit>();
-
-  late AppUser? currentUser = authCubit.currentUser;
 
   @override
   void initState() {
@@ -202,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else {
           return const Scaffold(
             body: Center(
-              child: Text("Erro ao carregar perfil"),
+              child: CircularProgressIndicator(),
             ),
           );
         }
