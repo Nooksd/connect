@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:connect/app/modules/auth/data/source/auth_api_service.dart';
 import 'package:connect/app/modules/auth/data/source/auth_storage_service.dart';
 import 'package:connect/app/modules/auth/domain/entities/app_user.dart';
@@ -38,14 +40,14 @@ class MongoAuthRepo implements AuthRepo {
   }
 
   @override
-  Future<AppUser?> getCurrentUser() async {
+  Future<AppUser?> isLoggedIn() async {
     try {
-      final response = await authApiService.getCurrentUser();
+      final user = await authStorageService.getUser();
+      final token = await authStorageService.getAccessToken();
 
-      if (response['status'] == 200) {
-        final data = response['data'];
-        final userData = data['user'];
+      final userData = user is String ? jsonDecode(user) : null;
 
+      if (user != null && token != null) {
         return AppUser.fromMap({
           'name': userData['name'],
           'email': userData['email'],

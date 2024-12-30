@@ -25,13 +25,8 @@ class AuthStorageService {
     return await localStorage.get('refreshToken');
   }
 
-  Future<Map<String, dynamic>?> getUser() async {
-    final userJson = await localStorage.get('user');
-
-    if (userJson != null) {
-      return jsonDecode(userJson) as Map<String, dynamic>;
-    }
-    return null;
+  Future<String?> getUser() async {
+    return await localStorage.get('user');
   }
 
   Future<void> clearAuthData() async {

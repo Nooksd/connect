@@ -27,13 +27,26 @@ class AppModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute(
       '/',
+      transition: TransitionType.noTransition,
       child: (_, __) => BlocProvider.value(
         value: Modular.get<AuthCubit>()..checkAuth(),
         child: const SplashScreen(),
       ),
     ),
-    ModuleRoute('/auth', module: AuthModule()),
-    ModuleRoute('/navigator', module: NavigationModule()),
-    ModuleRoute('/settings', module: SettingsModule()),
+    ModuleRoute(
+      '/auth',
+      transition: TransitionType.noTransition,
+      module: AuthModule(),
+    ),
+    ModuleRoute(
+      '/navigator',
+      transition: TransitionType.noTransition,
+      module: NavigationModule(),
+    ),
+    ModuleRoute(
+      '/settings',
+      transition: TransitionType.noTransition,
+      module: SettingsModule(),
+    ),
   ];
 }

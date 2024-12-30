@@ -1,11 +1,17 @@
+import 'dart:io';
+
+import 'package:connect/app/modules/profile/domain/entities/profile_user.dart';
 import 'package:connect/app/modules/profile/domain/repos/profile_repo.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
+  ProfileUser? _currentUser;
 
   ProfileCubit({required this.profileRepo}) : super(ProfileInitial());
+
+  ProfileUser? get currentUser => _currentUser;
 
   Future<void> fetchUserProfile(String uid) async {
     try {
@@ -28,6 +34,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       final user = await profileRepo.getSelfProfile();
 
       if (user != null) {
+        _currentUser = user;
         emit(ProfileLoaded(user));
       } else {
         emit(ProfileError("Usuário não encontrado"));
@@ -37,8 +44,24 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  Future<void> getUpdatedSelfProfile() async {
+    try {
+      emit(ProfileLoading());
+      final updatedUser = await profileRepo.getUpdatedSelfProfile();
+
+      if (updatedUser != null) {
+        _currentUser = updatedUser;
+        emit(ProfileLoaded(updatedUser));
+      } else {
+        emit(ProfileError("Usuário não encontrado"));
+      }
+    } catch (e) {
+      emit(ProfileError(e.toString()));
+    }
+  }
+
   Future<void> updateProfile({
-    String? newProfilePictureUrl,
+    File? newProfilePictureUrl,
     String? newFacebookUrl,
     String? newInstagramUrl,
     String? newLinkedinUrl,
@@ -60,6 +83,10 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
 
       await profileRepo.updateUserProfile(updatedProfile);
+
+      if(newProfilePictureUrl != null) {
+        await profileRepo.updateUserAvatar(newProfilePictureUrl);
+      }
 
       await getSelfProfile();
     } catch (e) {

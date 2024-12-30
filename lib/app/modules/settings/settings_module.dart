@@ -1,4 +1,3 @@
-import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_cubit.dart';
 import 'package:connect/app/modules/settings/presentation/pages/notifications_settings_page.dart';
 import 'package:connect/app/modules/settings/presentation/pages/profile_settings_page.dart';

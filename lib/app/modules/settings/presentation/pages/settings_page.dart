@@ -1,6 +1,7 @@
 import 'package:connect/app/core/custom/custom_icons.dart';
 import 'package:connect/app/modules/navigation/presentation/components/custom_appbar.dart';
 import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
+import 'package:connect/app/modules/profile/presentation/cubits/profile_cubit.dart';
 import 'package:connect/app/modules/settings/presentation/components/setting_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -15,7 +16,7 @@ class SettingsPage extends StatelessWidget {
     void navigateToTheme() => Modular.to.pushNamed("/settings/theme");
 
     void navigateToProfile() {
-      final user = context.read<AuthCubit>().currentUser;
+      final user = context.read<ProfileCubit>().currentUser;
 
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(

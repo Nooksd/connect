@@ -1,15 +1,17 @@
+import 'dart:io';
 import 'package:connect/app/core/custom/custom_icons.dart';
-import 'package:connect/app/modules/auth/domain/entities/app_user.dart';
 import 'package:connect/app/modules/navigation/presentation/components/custom_appbar.dart';
+import 'package:connect/app/modules/profile/domain/entities/profile_user.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_cubit.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_states.dart';
 import 'package:connect/app/modules/settings/presentation/components/action_button.dart';
 import 'package:connect/app/modules/settings/presentation/components/profile_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileSettingsPage extends StatefulWidget {
-  final AppUser user;
+  final ProfileUser user;
 
   const ProfileSettingsPage({super.key, required this.user});
 
@@ -18,9 +20,41 @@ class ProfileSettingsPage extends StatefulWidget {
 }
 
 class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
-  final linkedinController = TextEditingController();
-  final facebookController = TextEditingController();
-  final instagramController = TextEditingController();
+  late TextEditingController linkedinController;
+  late TextEditingController facebookController;
+  late TextEditingController instagramController;
+  File? selectedImage;
+  late String profilePictureUrl;
+
+  @override
+  void initState() {
+    super.initState();
+
+    linkedinController = TextEditingController(text: widget.user.linkedinUrl);
+    facebookController = TextEditingController(text: widget.user.facebookUrl);
+    instagramController = TextEditingController(text: widget.user.instagramUrl);
+
+    profilePictureUrl = widget.user.profilePictureUrl;
+  }
+
+  @override
+  void dispose() {
+    linkedinController.dispose();
+    facebookController.dispose();
+    instagramController.dispose();
+    super.dispose();
+  }
+
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        selectedImage = File(pickedFile.path);
+      });
+    }
+  }
 
   void updateProfile() async {
     final profileCubit = context.read<ProfileCubit>();
@@ -29,6 +63,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
       newFacebookUrl: facebookController.text,
       newLinkedinUrl: linkedinController.text,
       newInstagramUrl: instagramController.text,
+      newProfilePictureUrl: selectedImage,
     );
   }
 
@@ -72,12 +107,33 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               Center(
                 child: Stack(
                   children: [
-                    Container(
-                      width: 115,
-                      height: 115,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(1000),
-                        color: Theme.of(context).colorScheme.secondary,
+                    GestureDetector(
+                      onTap: pickImage, // Permite escolher a imagem
+                      child: Container(
+                        width: 115,
+                        height: 115,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(1000),
+                          color: Theme.of(context).colorScheme.secondary,
+                          image: selectedImage != null
+                              ? DecorationImage(
+                                  image: FileImage(selectedImage!),
+                                  fit: BoxFit.cover,
+                                )
+                              : (profilePictureUrl.isNotEmpty
+                                  ? DecorationImage(
+                                      image: NetworkImage(profilePictureUrl),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null),
+                        ),
+                        child: profilePictureUrl.isEmpty && selectedImage == null
+                            ? Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Theme.of(context).colorScheme.onSecondary,
+                              )
+                            : null,
                       ),
                     ),
                     Positioned(

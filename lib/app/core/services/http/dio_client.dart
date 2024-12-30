@@ -86,7 +86,7 @@ class DioClient implements MyHttpClient {
   }
 
   @override
-  Future<dynamic> update(String url, {dynamic data}) async {
+  Future<dynamic> put(String url, {dynamic data}) async {
     try {
       final response = await dio.put(url, data: data);
       return {

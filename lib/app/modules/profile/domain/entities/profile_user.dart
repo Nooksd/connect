@@ -93,25 +93,6 @@ class ProfileUser extends AppUser {
     };
   }
 
-  factory ProfileUser.fromJson(Map<String, dynamic> json) {
-    return ProfileUser(
-      uid: json['uid'],
-      email: json['email'],
-      name: json['name'],
-      pTotal: json['pTotal'] ?? 0,
-      pSpent: json['pSpent'] ?? 0,
-      pCurrent: json['pCurrent'] ?? 0,
-      profilePictureUrl: json['profilePictureUrl'] ?? '',
-      phoneNumber: json['phoneNumber'] ?? '',
-      role: json['role'] ?? '',
-      entryDate: json['entryDate'] ?? '',
-      birthday: json['birthday'] ?? '',
-      linkedinUrl: json['linkedinUrl'] ?? '',
-      instagramUrl: json['instagramUrl'] ?? '',
-      facebookUrl: json['facebookUrl'] ?? '',
-    );
-  }
-
   factory ProfileUser.fromMap(Map<String, dynamic> map) {
     return ProfileUser(
       uid: map['uid'] ?? '',
@@ -123,8 +104,16 @@ class ProfileUser extends AppUser {
       profilePictureUrl: map['profilePictureUrl'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       role: map['role'] ?? '',
-      entryDate: map['entryDate'] ?? DateTime.now(),
-      birthday: map['birthday'] ?? DateTime.now(),
+      entryDate: map['entryDate'] != null
+          ? (map['entryDate'] is int
+              ? DateTime.fromMillisecondsSinceEpoch(map['entryDate'] * 1000)
+              : DateTime.parse(map['entryDate']))
+          : DateTime.fromMillisecondsSinceEpoch(0),
+      birthday: map['birthday'] != null
+          ? (map['birthday'] is int
+              ? DateTime.fromMillisecondsSinceEpoch(map['birthday'] * 1000)
+              : DateTime.parse(map['birthday']))
+          : DateTime.fromMillisecondsSinceEpoch(0),
       linkedinUrl: map['linkedinUrl'] ?? '',
       instagramUrl: map['instagramUrl'] ?? '',
       facebookUrl: map['facebookUrl'] ?? '',

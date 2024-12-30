@@ -1,5 +1,6 @@
 // import 'package:connect/app/modules/profile/data/source/profile_api_service.dart';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:connect/app/modules/profile/data/source/profile_api_service.dart';
 import 'package:connect/app/modules/profile/data/source/profile_storage_service.dart';
@@ -28,7 +29,10 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<void> updateUserProfile(ProfileUser updatedProfileUser) async {
     try {
-      await profileApiService.updateUser(updatedProfileUser);
+      final response = await profileApiService.updateUser(updatedProfileUser);
+      final userData = response["data"]["user"];
+
+      await profileStorageService.setuser(userData);
     } catch (e) {
       throw Exception(e);
     }
@@ -48,16 +52,41 @@ class MongoProfileRepo implements ProfileRepo {
   Future<ProfileUser?> getSelfProfile() async {
     try {
       final user = await profileStorageService.getUser();
+      final userData = jsonDecode(user ?? "");
 
       if (user == null) {
         return null;
       }
 
-      final data = jsonDecode(user);
-
-      return ProfileUser.fromMap(data);
+      return ProfileUser.fromMap(userData);
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  @override
+  Future<ProfileUser?> getUpdatedSelfProfile() async {
+        try {
+      final response = await profileApiService.getCurrentUser();
+
+      if (response['status'] == 200) {
+        final data = response['data'];
+
+        final userData = data['user'];
+
+        await profileStorageService.setuser(userData);
+
+        return ProfileUser.fromMap(userData);
+      }
+      return null;
+    } catch (e) {
+      throw Exception('Failed to login: $e');
+    }
+  }
+
+  @override
+  Future<void> updateUserAvatar(File updatedAvatar) {
+    // TODO: implement updateUserAvatar
+    throw UnimplementedError();
   }
 }

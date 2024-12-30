@@ -16,31 +16,11 @@ class NavigationModule extends Module {
       '/',
       child: (_, __) => const NavigatorPage(),
       children: [
-        ChildRoute(
-          '/feed',
-          child: (_, __) => const FeedPage(),
-          transition: TransitionType.noTransition,
-        ),
-        ChildRoute(
-          '/missions',
-          child: (_, __) => const MissionsPage(),
-          transition: TransitionType.noTransition,
-        ),
-        ChildRoute(
-          '/post',
-          child: (_, __) => const PostPage(),
-          transition: TransitionType.noTransition,
-        ),
-        ChildRoute(
-          '/explore',
-          child: (_, __) => const ExplorePage(),
-          transition: TransitionType.noTransition,
-        ),
-        ModuleRoute(
-          '/profile',
-          module: ProfileModule(),
-          transition: TransitionType.noTransition,
-        ),
+        ChildRoute('/feed', child: (_, __) => const FeedPage()),
+        ChildRoute('/missions', child: (_, __) => const MissionsPage()),
+        ChildRoute('/post', child: (_, __) => const PostPage()),
+        ChildRoute('/explore', child: (_, __) => const ExplorePage()),
+        ModuleRoute('/profile', module: ProfileModule()),
       ],
     ),
   ];
