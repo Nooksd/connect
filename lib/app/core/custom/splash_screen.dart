@@ -1,9 +1,9 @@
 import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/app/modules/auth/presentation/cubits/auth_states.dart';
 import 'package:connect/app/modules/auth/presentation/pages/login_page.dart';
-import 'package:connect/app/modules/navigation/presentation/pages/navigator_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -14,7 +14,8 @@ class SplashScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       builder: (context, state) {
         if (state is Authenticated) {
-          return const NavigatorPage();
+          String userName = state.user.name;
+          Modular.to.navigate('/navigator', arguments: {'userName': userName});
         } else if (state is Unauthenticated) {
           return const LoginPage();
         }

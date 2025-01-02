@@ -122,16 +122,20 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                                 )
                               : (profilePictureUrl.isNotEmpty
                                   ? DecorationImage(
-                                      image: NetworkImage(profilePictureUrl),
+                                      image: NetworkImage(
+                                        '$profilePictureUrl?t=${DateTime.now().millisecondsSinceEpoch}',
+                                      ),
                                       fit: BoxFit.cover,
                                     )
                                   : null),
                         ),
-                        child: profilePictureUrl.isEmpty && selectedImage == null
+                        child: profilePictureUrl.isEmpty &&
+                                selectedImage == null
                             ? Icon(
                                 Icons.person,
                                 size: 60,
-                                color: Theme.of(context).colorScheme.onSecondary,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
                               )
                             : null,
                       ),

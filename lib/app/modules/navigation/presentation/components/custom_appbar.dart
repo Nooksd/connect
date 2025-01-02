@@ -6,11 +6,13 @@ import 'package:connect/app/core/custom/custom_icons.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int selectedIndex;
   final String title;
+  final String userName;
 
   const CustomAppBar({
     super.key,
     required this.selectedIndex,
     this.title = "",
+    this.userName = "",
   });
 
   @override
@@ -20,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final Map<int, List<Widget>> appBarActions = {
       0: [
-        const Text("Olá, João Victor"),
+        Text("Olá, $userName"),
         IconButton(
           onPressed: () {
             Modular.to.pushNamed('/notifications');

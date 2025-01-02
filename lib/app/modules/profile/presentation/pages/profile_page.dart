@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
             body: RefreshIndicator(
               onRefresh: () async {
                 if (widget.uid?.isEmpty ?? true) {
-                  await profileCubit.getSelfProfile();
+                  await profileCubit.getUpdatedSelfProfile();
                 } else {
                   await profileCubit.fetchUserProfile(widget.uid!);
                 }
@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             child: ClipOval(
                               child: Image.network(
-                                user.profilePictureUrl,
+                                '${user.profilePictureUrl}?t=${DateTime.now().millisecondsSinceEpoch}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(
@@ -221,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else {
           return const Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: Text("Erro"),
             ),
           );
         }

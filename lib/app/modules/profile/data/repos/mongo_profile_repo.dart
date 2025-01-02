@@ -1,4 +1,3 @@
-// import 'package:connect/app/modules/profile/data/source/profile_api_service.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -27,22 +26,15 @@ class MongoProfileRepo implements ProfileRepo {
   }
 
   @override
-  Future<void> updateUserProfile(ProfileUser updatedProfileUser) async {
+  Future<void> updateUserProfile(ProfileUser updatedProfileUser, File? avatar) async {
     try {
-      final response = await profileApiService.updateUser(updatedProfileUser);
+      final response = await profileApiService.updateUser(updatedProfileUser, avatar);
       final userData = response["data"]["user"];
 
+      if (userData == null) {
+        return;
+      }
       await profileStorageService.setuser(userData);
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  @override
-  Future<void> updateCoins(ProfileUser updatedProfileUser) async {
-    try {
-      // TODO: implement
-      throw UnimplementedError();
     } catch (e) {
       throw Exception(e);
     }
@@ -66,7 +58,7 @@ class MongoProfileRepo implements ProfileRepo {
 
   @override
   Future<ProfileUser?> getUpdatedSelfProfile() async {
-        try {
+    try {
       final response = await profileApiService.getCurrentUser();
 
       if (response['status'] == 200) {
@@ -82,11 +74,5 @@ class MongoProfileRepo implements ProfileRepo {
     } catch (e) {
       throw Exception('Failed to login: $e');
     }
-  }
-
-  @override
-  Future<void> updateUserAvatar(File updatedAvatar) {
-    // TODO: implement updateUserAvatar
-    throw UnimplementedError();
   }
 }

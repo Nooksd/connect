@@ -12,18 +12,29 @@ class NavigatorPage extends StatefulWidget {
 }
 
 class _NavigatorPageState extends State<NavigatorPage> {
+  String userName = "";
+
   @override
   void initState() {
     super.initState();
     _navigateBottomBar(0);
+
+    final args = Modular.args.data as Map<String, dynamic>;
+    if (args['userName'] != null) {
+      List<String> names = args['userName'].split(' ');
+
+      String name = '${names[0]} ${names.length > 1 ? names[1] : ''}';
+
+      userName = name;
+    }
   }
 
   int _selectedIndex = 0;
 
   final List<String> _routes = [
-    '/navigator/feed',
+    '/navigator/post/feed',
     '/navigator/missions',
-    '/navigator/post',
+    '/navigator/post/create',
     '/navigator/explore',
     '/navigator/profile',
   ];
@@ -38,7 +49,10 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(selectedIndex: _selectedIndex),
+      appBar: CustomAppBar(
+        selectedIndex: _selectedIndex,
+        userName: userName,
+      ),
       body: const RouterOutlet(),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),

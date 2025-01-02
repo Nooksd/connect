@@ -21,6 +21,10 @@ class AuthStorageService {
     return await localStorage.get('accessToken');
   }
 
+  Future<void> saveAccessToken(String accessToken) async {
+    await localStorage.set('accessToken', accessToken);
+  }
+
   Future<String?> getRefreshToken() async {
     return await localStorage.get('refreshToken');
   }

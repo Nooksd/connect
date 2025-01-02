@@ -82,11 +82,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         newLinkedinUrl: newLinkedinUrl ?? currentUser.linkedinUrl,
       );
 
-      await profileRepo.updateUserProfile(updatedProfile);
-
-      if(newProfilePictureUrl != null) {
-        await profileRepo.updateUserAvatar(newProfilePictureUrl);
-      }
+      await profileRepo.updateUserProfile(updatedProfile, newProfilePictureUrl);
 
       await getSelfProfile();
     } catch (e) {

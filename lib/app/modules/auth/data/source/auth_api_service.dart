@@ -13,7 +13,7 @@ class AuthApiService {
         'password': password,
       };
       final data = jsonEncode(body);
-      final response = await httpClient.post('/users/login', data: data);
+      final response = await httpClient.post('/auth/login', data: data);
 
       return response as Map<String, dynamic>;
     } catch (e) {

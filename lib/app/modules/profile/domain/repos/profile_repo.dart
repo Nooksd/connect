@@ -6,7 +6,5 @@ abstract class ProfileRepo {
   Future<ProfileUser?> fetchUserProfile(String uid);
   Future<ProfileUser?> getSelfProfile();
   Future<ProfileUser?> getUpdatedSelfProfile();
-  Future<void> updateUserProfile(ProfileUser updatedProfileUser);
-  Future<void> updateUserAvatar(File updatedAvatar);
-  Future<void> updateCoins(ProfileUser updatedProfileUser);
+  Future<void> updateUserProfile(ProfileUser updatedProfileUser, File? avatar);
 }

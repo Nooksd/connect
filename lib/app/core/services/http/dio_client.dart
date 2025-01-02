@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connect/app/modules/auth/data/source/auth_storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:connect/app/core/services/http/my_http_client.dart';
@@ -11,7 +13,7 @@ class DioClient implements MyHttpClient {
     dio.options.baseUrl = 'http://192.168.1.68:9000';
 
     dio.options.validateStatus = (status) {
-      return status! < 500;
+      return status != null && status >= 200 && status < 300;
     };
 
     dio.options.receiveDataWhenStatusError = true;
@@ -30,11 +32,53 @@ class DioClient implements MyHttpClient {
           }
           return handler.next(options);
         },
-        onResponse: (response, handler) {
-          if (response.statusCode == 401) {}
+        onResponse: (response, handler) async {
+          if (response.statusCode == 401) {
+            return handler.reject(
+              DioException(
+                requestOptions: response.requestOptions,
+                response: response,
+                type: DioExceptionType.badResponse,
+              ),
+            );
+          }
           return handler.next(response);
         },
-        onError: (DioException error, handler) {
+        onError: (DioException error, handler) async {
+          if (error.response?.statusCode == 401) {
+            String? refreshToken = await localStorage.getRefreshToken();
+
+            if (refreshToken != null) {
+              try {
+                final response = await dio.get(
+                  '/auth/refresh-token',
+                  options: Options(
+                    headers: {
+                      'Token': refreshToken,
+                    },
+                  ),
+                );
+
+                if (response.statusCode == 200) {
+                  final newAccessToken = response.data['accessToken'];
+
+                  await localStorage.saveAccessToken(newAccessToken);
+
+                  final options = error.requestOptions;
+                  options.headers['Authorization'] = newAccessToken;
+                  final retryResponse = await dio.fetch(options);
+
+                  return handler.resolve(retryResponse);
+                } else {
+                  await localStorage.clearAuthData();
+                  return handler.next(error);
+                }
+              } catch (e) {
+                return handler.next(error);
+              }
+            }
+          }
+
           return handler.next(error);
         },
       ),
@@ -73,8 +117,6 @@ class DioClient implements MyHttpClient {
   Future<dynamic> post(String url, {dynamic data}) async {
     try {
       final response = await dio.post(url, data: data);
-    
-      print("resposta: $response");
 
       return {
         "data": response.data,
@@ -89,6 +131,34 @@ class DioClient implements MyHttpClient {
   Future<dynamic> put(String url, {dynamic data}) async {
     try {
       final response = await dio.put(url, data: data);
+      return {
+        "data": response.data,
+        "status": response.statusCode,
+      };
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future multiPart(String url, {dynamic body}) async {
+    try {
+      final formData = FormData();
+
+      await Future.forEach(body.entries,
+          (MapEntry<String, dynamic> entry) async {
+        if (entry.value is File) {
+          formData.files.add(MapEntry(
+            entry.key,
+            await MultipartFile.fromFile(entry.value.path),
+          ));
+        } else {
+          formData.fields.add(MapEntry(entry.key, entry.value.toString()));
+        }
+      });
+
+      final response = await dio.post(url, data: formData);
+
       return {
         "data": response.data,
         "status": response.statusCode,
