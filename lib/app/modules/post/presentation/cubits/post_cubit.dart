@@ -25,29 +25,71 @@ class PostCubit extends Cubit<PostState> {
       }
 
       await postRepo.createPost(updatedPost);
+
+      await getPosts(1);
     } catch (e) {
       emit(PostError(e.toString()));
     }
   }
 
-  Future<void> getPosts() async {
+  Future<void> getPosts(int page) async {
     try {
-      emit(PostLoading());
+      if (page == 1) {
+        emit(PostLoading());
+      }
 
-      final posts = await postRepo.getPosts();
+      final newPosts = await postRepo.getPosts(page);
 
-      emit(PostLoaded(posts));
+      if (page > 1 && state is PostLoaded) {
+        final currentPosts = (state as PostLoaded).posts;
+        emit(PostLoaded([...currentPosts, ...newPosts]));
+      } else {
+        emit(PostLoaded(newPosts));
+      }
     } catch (e) {
-      emit(PostError(e.toString()));
+      if (page == 1) {
+        emit(PostError(e.toString()));
+      }
     }
   }
 
   Future<void> deletePost(String postId) async {
     try {
-      emit(PostLoading());
       await postRepo.deletePost(postId);
     } catch (e) {
       emit(PostError(e.toString()));
+    }
+  }
+
+  Future<void> likePost(String postId) async {
+    try {
+      await postRepo.likePost(postId);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> dislikePost(String postId) async {
+    try {
+      await postRepo.dislikePost(postId);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> commentPost(String postId, String comment) async {
+    try {
+      await postRepo.commentPost(postId, comment);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> deleteComment(String postId, String commentId) async {
+    try {
+      await postRepo.deleteComment(postId, commentId);
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:connect/app/core/services/http/my_http_client.dart';
@@ -11,46 +10,125 @@ class MongoPostRepo implements PostRepo {
   MongoPostRepo({required this.http});
 
   @override
-  Future<void> createPost(Post post) {
-    // TODO: implement createPost
-    throw UnimplementedError();
+  Future<void> createPost(Post post) async {
+    try {
+      final response = await http.post('/post/create', data: post.toJson());
+
+      print(response);
+
+      if (response["status"] != 200) {
+        throw Exception('Falha ao deletar post');
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override
-  Future<void> deletePost(String postId) {
-    // TODO: implement deletePost
-    throw UnimplementedError();
+  Future<void> deletePost(String postId) async {
+    try {
+      final response = await http.delete('/post/delete/$postId');
+
+      print(response);
+
+      if (response["status"] != 200) {
+        throw Exception('Falha ao deletar post');
+      }
+    } catch (e) {
+      throw Exception('Falha ao deletar post');
+    }
   }
 
   @override
-  Future<List<Post>> getPosts() {
-    // TODO: implement getPosts
-    throw UnimplementedError();
+  Future<List<Post>> getPosts(int page) async {
+    try {
+      final response = await http.get('/post/get?page=$page');
+
+      if (response["status"] == 200) {
+        final data = response["data"]["posts"];
+
+        if (data is List) {
+          final List<Post> allPosts = data
+              .map((post) => Post.fromJson(post as Map<String, dynamic>))
+              .toList();
+          return allPosts;
+        } else {
+          throw Exception("O formato esperado da resposta é uma lista.");
+        }
+      }
+
+      return Future.value([]);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
-  
+
   @override
   Future<String> uploadImage(File imageFile) async {
     try {
-      final body = {
-        'image': imageFile
-      };
+      final body = {'image': imageFile};
       final response = await http.multiPart('/post/image/upload', body: body);
 
       print(response);
 
       if (response["status"] == 200) {
-
         final imageUrl = response["data"]["url"];
 
         return Future.value(imageUrl);
       } else {
-        throw Exception('Failed to upload image');
+        throw Exception('Falha ao enviar imagem');
       }
-
     } catch (e) {
       throw Exception(e);
     }
   }
-  
 
+  @override
+  Future<void> commentPost(String postId, String comment) async {
+    try {
+      final data = {"text": comment};
+      final response = await http.post('/post/comment/$postId', data: data);
+
+      print(response);
+
+      if (response["status"] != 200) {
+        throw Exception('Falha ao comentar post');
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<void> deleteComment(String postId, String commentId) async {
+    try {} catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<void> dislikePost(String postId) async {
+    try {
+      final response = await http.post('/post/dislike/$postId');
+
+      if (response["status"] != 200) {
+        throw Exception('Falha ao descurtir post');
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<void> likePost(String postId) async {
+    try {
+      final response = await http.post('/post/like/$postId');
+
+      if (response["status"] != 200) {
+        throw Exception('Falha ao curtir post');
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

@@ -5,9 +5,7 @@ class ProfileUser extends AppUser {
   final int pSpent;
   final int pCurrent;
 
-  final String profilePictureUrl;
   final String phoneNumber;
-  final String role;
   final DateTime entryDate;
   final DateTime birthday;
 
@@ -19,12 +17,12 @@ class ProfileUser extends AppUser {
     required super.uid,
     required super.email,
     required super.name,
+    super.role,
+    super.profilePictureUrl,
     required this.pTotal,
     required this.pSpent,
     required this.pCurrent,
-    required this.profilePictureUrl,
     required this.phoneNumber,
-    required this.role,
     required this.entryDate,
     required this.birthday,
     required this.linkedinUrl,
@@ -32,41 +30,23 @@ class ProfileUser extends AppUser {
     required this.facebookUrl,
   });
 
-  ProfileUser updateStore({int? newPTotal, int? newPSpent, int? newPCurrent}) {
-    return ProfileUser(
-      uid: uid,
-      email: email,
-      name: name,
-      pTotal: newPTotal ?? pTotal,
-      pSpent: newPSpent ?? pSpent,
-      pCurrent: newPCurrent ?? pCurrent,
-      profilePictureUrl: profilePictureUrl,
-      phoneNumber: phoneNumber,
-      role: role,
-      entryDate: entryDate,
-      birthday: birthday,
-      linkedinUrl: linkedinUrl,
-      instagramUrl: instagramUrl,
-      facebookUrl: facebookUrl,
-    );
-  }
-
   ProfileUser updateData({
     String? newProfilePictureUrl,
     String? newLinkedinUrl,
     String? newInstagramUrl,
     String? newFacebookUrl,
+    String? newRole,
   }) {
     return ProfileUser(
       uid: uid,
       email: email,
       name: name,
+      role: newRole ?? role,
+      profilePictureUrl: newProfilePictureUrl ?? profilePictureUrl,
       pTotal: pTotal,
       pSpent: pSpent,
       pCurrent: pCurrent,
-      profilePictureUrl: newProfilePictureUrl ?? profilePictureUrl,
       phoneNumber: phoneNumber,
-      role: role,
       entryDate: entryDate,
       birthday: birthday,
       linkedinUrl: newLinkedinUrl ?? linkedinUrl,
@@ -82,9 +62,7 @@ class ProfileUser extends AppUser {
       'pTotal': pTotal,
       'pSpent': pSpent,
       'pCurrent': pCurrent,
-      'profilePictureUrl': profilePictureUrl,
       'phoneNumber': phoneNumber,
-      'role': role,
       'entryDate': entryDate.toIso8601String(),
       'birthday': birthday.toIso8601String(),
       'linkedinUrl': linkedinUrl,
@@ -98,12 +76,12 @@ class ProfileUser extends AppUser {
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
       name: map['name'] ?? '',
+      role: map['role'],
+      profilePictureUrl: map['profilePictureUrl'],
       pTotal: map['pTotal'] ?? 0,
       pSpent: map['pSpent'] ?? 0,
       pCurrent: map['pCurrent'] ?? 0,
-      profilePictureUrl: map['profilePictureUrl'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
-      role: map['role'] ?? '',
       entryDate: map['entryDate'] != null
           ? (map['entryDate'] is int
               ? DateTime.fromMillisecondsSinceEpoch(map['entryDate'] * 1000)

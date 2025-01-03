@@ -2,11 +2,15 @@ class AppUser {
   final String uid;
   final String email;
   final String name;
+  final String? role;
+  final String? profilePictureUrl;
 
   AppUser({
     required this.uid,
     required this.email,
     required this.name,
+    this.role,
+    this.profilePictureUrl,
   });
 
   Map<String, dynamic> toJson() {
@@ -14,6 +18,8 @@ class AppUser {
       'uid': uid,
       'email': email,
       'name': name,
+      'role': role,
+      'profilePictureUrl': profilePictureUrl,
     };
   }
 
@@ -22,6 +28,8 @@ class AppUser {
       uid: map['id'] as String,
       email: map['email'] as String,
       name: map['name'] as String,
+      role: map['role'],
+      profilePictureUrl: map['profilePictureUrl'],
     );
   }
 }

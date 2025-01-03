@@ -88,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            user.role,
+                            user.role.toString(),
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
@@ -143,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 DataTile(
                                   icon: const Icon(CustomIcons.role, size: 17),
                                   title: "Cargo",
-                                  number: user.role,
+                                  number: user.role.toString(),
                                 ),
                                 const SizedBox(height: 30),
                                 DataTile(

@@ -14,8 +14,8 @@ ThemeData lightMode = ThemeData(
   ),
   colorScheme: const ColorScheme.light(
     primary: Color(0xFF2257A8),
-    primaryContainer: Color(0xFFF6F8FD),
-    primaryFixed: Color(0xFFD3DDEE),
+    primaryContainer: Color.fromRGBO(246, 248, 253, 1),
+    primaryFixed: Color.fromRGBO(211, 221, 238, 1),
     onPrimary: Color(0xFF172242),
     secondary: Color(0xFFB0D159),
     error: Color(0xFFFDD9D7),

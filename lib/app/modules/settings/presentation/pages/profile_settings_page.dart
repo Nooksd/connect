@@ -34,7 +34,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     facebookController = TextEditingController(text: widget.user.facebookUrl);
     instagramController = TextEditingController(text: widget.user.instagramUrl);
 
-    profilePictureUrl = widget.user.profilePictureUrl;
+    profilePictureUrl = widget.user.profilePictureUrl.toString();
   }
 
   @override

@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
       builder: (context, state) {
         if (state is Authenticated) {
           String userName = state.user.name;
-          Modular.to.navigate('/navigator', arguments: {'userName': userName});
+          Modular.to.navigate('/navigator/', arguments: {'userName': userName});
         } else if (state is Unauthenticated) {
           return const LoginPage();
         }

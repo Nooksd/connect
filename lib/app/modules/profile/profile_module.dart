@@ -33,7 +33,6 @@ class ProfileModule extends Module {
           BlocProvider<AuthCubit>(
             create: (_) => Modular.get<AuthCubit>(),
           ),
-          // Adicione outros Bloc/Cubit aqui, se necessário
         ],
         child: const ProfilePage(),
       ),
