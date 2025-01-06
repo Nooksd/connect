@@ -13,7 +13,7 @@ class NavigationModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute(
       '/',
-      child: (_, __) => const NavigatorPage(),
+      child: (_, __) => NavigatorPage(key: navigatorPageKey),
       children: [
         ModuleRoute('/post', module: PostModule()),
         ChildRoute('/missions', child: (_, __) => const MissionsPage()),

@@ -5,6 +5,7 @@ import 'package:connect/app/modules/post/domain/entities/post.dart';
 abstract class PostRepo {
   Future<List<Post>> getPosts(int page);
   Future<void> createPost(Post post);
+  Future<Post?> getPost(String postId);
   Future<void> likePost(String postId);
   Future<void> dislikePost(String postId);
   Future<void> commentPost(String postId, String comment);

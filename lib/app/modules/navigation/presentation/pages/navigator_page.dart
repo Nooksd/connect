@@ -4,6 +4,9 @@ import 'package:connect/app/core/custom/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+// ignore: library_private_types_in_public_api
+final GlobalKey<_NavigatorPageState> navigatorPageKey = GlobalKey<_NavigatorPageState>();
+
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({super.key});
 
@@ -13,6 +16,14 @@ class NavigatorPage extends StatefulWidget {
 
 class _NavigatorPageState extends State<NavigatorPage> {
   String userName = "";
+  int _selectedIndex = 0;
+
+  void resetState({required String newUserName}) {
+    setState(() {
+      userName = newUserName;
+      _selectedIndex = 0;
+    });
+  }
 
   @override
   void initState() {
@@ -28,8 +39,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
       userName = name;
     }
   }
-
-  int _selectedIndex = 0;
 
   final List<String> _routes = [
     '/navigator/post/feed',

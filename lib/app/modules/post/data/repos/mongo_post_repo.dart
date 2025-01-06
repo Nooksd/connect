@@ -12,6 +12,7 @@ class MongoPostRepo implements PostRepo {
   @override
   Future<void> createPost(Post post) async {
     try {
+      print(post.toJson());
       final response = await http.post('/post/create', data: post.toJson());
 
       print(response);
@@ -28,8 +29,6 @@ class MongoPostRepo implements PostRepo {
   Future<void> deletePost(String postId) async {
     try {
       final response = await http.delete('/post/delete/$postId');
-
-      print(response);
 
       if (response["status"] != 200) {
         throw Exception('Falha ao deletar post');
@@ -89,8 +88,6 @@ class MongoPostRepo implements PostRepo {
       final data = {"text": comment};
       final response = await http.post('/post/comment/$postId', data: data);
 
-      print(response);
-
       if (response["status"] != 200) {
         throw Exception('Falha ao comentar post');
       }
@@ -101,7 +98,14 @@ class MongoPostRepo implements PostRepo {
 
   @override
   Future<void> deleteComment(String postId, String commentId) async {
-    try {} catch (e) {
+    try {
+      final response =
+          await http.delete('/post/comment/delete/$postId/$commentId');
+
+      if (response["status"] != 200) {
+        throw Exception('Falha ao comentar post');
+      }
+    } catch (e) {
       throw Exception(e);
     }
   }
@@ -127,6 +131,23 @@ class MongoPostRepo implements PostRepo {
       if (response["status"] != 200) {
         throw Exception('Falha ao curtir post');
       }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<Post?> getPost(String postId) async {
+    try {
+      final response = await http.get('/post/get/$postId');
+
+      if (response["status"] == 200) {
+        final post = response["data"]["post"];
+
+        return Post.fromJson(post);
+      }
+
+      return null;
     } catch (e) {
       throw Exception(e);
     }

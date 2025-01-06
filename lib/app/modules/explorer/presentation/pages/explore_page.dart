@@ -15,8 +15,8 @@ class ExplorePage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: SingleChildScrollView(
+          child: Center(
             child: Column(
               children: [
                 AppFunctionTile(
@@ -38,7 +38,9 @@ class ExplorePage extends StatelessWidget {
                   onTap: navigateToBirthdays,
                 ),
               ],
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }

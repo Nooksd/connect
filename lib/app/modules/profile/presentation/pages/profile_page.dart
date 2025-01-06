@@ -6,6 +6,7 @@ import 'package:connect/app/modules/profile/presentation/cubits/profile_cubit.da
 import 'package:connect/app/core/custom/custom_icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
@@ -19,7 +20,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late final profileCubit = context.read<ProfileCubit>();
+  late final profileCubit = Modular.get<ProfileCubit>();
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
+      bloc: profileCubit,
       builder: (context, state) {
         if (state is ProfileLoaded) {
           final user = state.profileUser;

@@ -34,6 +34,8 @@ class MongoAuthRepo implements AuthRepo {
 
         return AppUser.fromMap({
           'name': userData['name'],
+          'role': userData['role'],
+          'profilePictureUrl': userData['profilePictureUrl'],
           'email': userData['email'],
           'id': userData['id'],
         });
@@ -55,6 +57,8 @@ class MongoAuthRepo implements AuthRepo {
       if (user != null && token != null) {
         return AppUser.fromMap({
           'name': userData['name'],
+          'role': userData['role'],
+          'profilePictureUrl': userData['profilePictureUrl'],
           'email': userData['email'],
           'id': userData['id'],
         });
@@ -67,7 +71,7 @@ class MongoAuthRepo implements AuthRepo {
 
   @override
   Future<void> logout() async {
-     await storage.remove('accessToken');
+    await storage.remove('accessToken');
     await storage.remove('refreshToken');
     await storage.remove('user');
   }

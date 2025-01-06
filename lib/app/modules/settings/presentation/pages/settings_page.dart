@@ -39,52 +39,54 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(selectedIndex: 5, title: "Configurações"),
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: [
-                const SizedBox(height: 60),
-                SettingTile(
-                  icon: const Icon(
-                    CustomIcons.theme,
-                    size: 25,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  const SizedBox(height: 60),
+                  SettingTile(
+                    icon: const Icon(
+                      CustomIcons.theme,
+                      size: 25,
+                    ),
+                    title: "Tema",
+                    onTap: navigateToTheme,
                   ),
-                  title: "Tema",
-                  onTap: navigateToTheme,
-                ),
-                SettingTile(
-                  icon: const Icon(
-                    CustomIcons.profile,
-                    size: 25,
+                  SettingTile(
+                    icon: const Icon(
+                      CustomIcons.profile,
+                      size: 25,
+                    ),
+                    title: "Perfil",
+                    onTap: navigateToProfile,
                   ),
-                  title: "Perfil",
-                  onTap: navigateToProfile,
-                ),
-                SettingTile(
-                  icon: const Icon(
-                    CustomIcons.notifications,
-                    size: 25,
+                  SettingTile(
+                    icon: const Icon(
+                      CustomIcons.notifications,
+                      size: 25,
+                    ),
+                    title: "Notificações",
+                    onTap: navigateToNotifications,
                   ),
-                  title: "Notificações",
-                  onTap: navigateToNotifications,
-                ),
-                SettingTile(
-                  icon: const Icon(
-                    CustomIcons.suport,
-                    size: 25,
+                  SettingTile(
+                    icon: const Icon(
+                      CustomIcons.suport,
+                      size: 25,
+                    ),
+                    title: "Suporte",
+                    onTap: goToSuportChat,
                   ),
-                  title: "Suporte",
-                  onTap: goToSuportChat,
-                ),
-                SettingTile(
-                  icon: Icon(CustomIcons.logout,
-                      color: Theme.of(context).colorScheme.onError),
-                  title: "Sair",
-                  danger: true,
-                  onTap: logout,
-                ),
-              ],
+                  SettingTile(
+                    icon: Icon(CustomIcons.logout,
+                        color: Theme.of(context).colorScheme.onError),
+                    title: "Sair",
+                    danger: true,
+                    onTap: logout,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

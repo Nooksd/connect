@@ -4,8 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class PostModule extends Module {
   @override
-  final List<Bind> binds = [
-  ];
+  final List<Bind> binds = [];
 
   @override
   final List<ModularRoute> routes = [
@@ -15,7 +14,7 @@ class PostModule extends Module {
     ),
     ChildRoute(
       '/create',
-      child: (_, __) => const PostPage(), 
-    )
+      child: (_, __) => PostPage(),
+    ),
   ];
 }

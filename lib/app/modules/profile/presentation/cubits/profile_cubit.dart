@@ -1,9 +1,10 @@
 import 'dart:io';
-
+import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/app/modules/profile/domain/entities/profile_user.dart';
 import 'package:connect/app/modules/profile/domain/repos/profile_repo.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
@@ -31,6 +32,13 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> getSelfProfile() async {
     try {
       emit(ProfileLoading());
+
+      final authCubit = Modular.get<AuthCubit>();
+      if (authCubit.currentUser == null) {
+        emit(ProfileError("Usuário não autenticado"));
+        return;
+      }
+
       final user = await profileRepo.getSelfProfile();
 
       if (user != null) {
@@ -88,5 +96,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (e) {
       emit(ProfileError(e.toString()));
     }
+  }
+
+  void clearProfile() {
+    _currentUser = null;
+    emit(ProfileInitial());
   }
 }

@@ -7,6 +7,7 @@ import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/app/modules/navigation/navigation_module.dart';
 import 'package:connect/app/modules/post/data/repos/mongo_post_repo.dart';
 import 'package:connect/app/modules/post/presentation/cubits/post_cubit.dart';
+import 'package:connect/app/modules/post/presentation/pages/view_page.dart';
 import 'package:connect/app/modules/profile/data/repos/mongo_profile_repo.dart';
 import 'package:connect/app/modules/profile/presentation/cubits/profile_cubit.dart';
 import 'package:connect/app/modules/settings/settings_module.dart';
@@ -50,6 +51,10 @@ class AppModule extends Module {
       '/settings',
       transition: TransitionType.noTransition,
       module: SettingsModule(),
+    ),
+    ChildRoute(
+      '/view-post/:postId',
+      child: (_, args) => ViewPage(postId: args.params['postId']),
     ),
   ];
 }

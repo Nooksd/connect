@@ -29,6 +29,10 @@ class MongoProfileRepo implements ProfileRepo {
       final uid = body.uid;
       final response = await http.put('/users/update/$uid', data: data);
 
+      if (avatar != null) {
+        await _uploadAvatar(uid, avatar);
+      }
+
       final userData = response["data"]["user"];
 
       if (userData == null) {
@@ -66,13 +70,22 @@ class MongoProfileRepo implements ProfileRepo {
 
         final userData = data['user'];
 
-       await storage.set('user', jsonEncode(userData));
+        await storage.set('user', jsonEncode(userData));
 
         return ProfileUser.fromMap(userData);
       }
       return null;
     } catch (e) {
       throw Exception('Failed to login: $e');
+    }
+  }
+
+  Future<void> _uploadAvatar(String uid, File avatar) async {
+    try {
+      final Map<String, dynamic> body = {"avatar": avatar};
+      await http.multiPart("/avatar/upload/$uid", body: body);
+    } catch (e) {
+      throw Exception('Error uploading avatar: $e');
     }
   }
 }

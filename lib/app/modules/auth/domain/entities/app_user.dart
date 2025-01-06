@@ -2,15 +2,15 @@ class AppUser {
   final String uid;
   final String email;
   final String name;
-  final String? role;
-  final String? profilePictureUrl;
+  final String role;
+  final String profilePictureUrl;
 
   AppUser({
     required this.uid,
     required this.email,
     required this.name,
-    this.role,
-    this.profilePictureUrl,
+    required this.role,
+    required this.profilePictureUrl,
   });
 
   Map<String, dynamic> toJson() {

@@ -101,94 +101,100 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
       appBar: const CustomAppBar(selectedIndex: 5, title: 'Editar Perfil'),
       body: Stack(
         children: [
-          Column(
-            children: [
-              const SizedBox(height: 18),
-              Center(
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: pickImage, // Permite escolher a imagem
-                      child: Container(
-                        width: 115,
-                        height: 115,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1000),
-                          color: Theme.of(context).colorScheme.secondary,
-                          image: selectedImage != null
-                              ? DecorationImage(
-                                  image: FileImage(selectedImage!),
-                                  fit: BoxFit.cover,
-                                )
-                              : (profilePictureUrl.isNotEmpty
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 18),
+                  Center(
+                    child: Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: pickImage, // Permite escolher a imagem
+                          child: Container(
+                            width: 115,
+                            height: 115,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(1000),
+                              color: Theme.of(context).colorScheme.secondary,
+                              image: selectedImage != null
                                   ? DecorationImage(
-                                      image: NetworkImage(
-                                        '$profilePictureUrl?t=${DateTime.now().millisecondsSinceEpoch}',
-                                      ),
+                                      image: FileImage(selectedImage!),
                                       fit: BoxFit.cover,
                                     )
-                                  : null),
+                                  : (profilePictureUrl.isNotEmpty
+                                      ? DecorationImage(
+                                          image: NetworkImage(
+                                            '$profilePictureUrl?t=${DateTime.now().millisecondsSinceEpoch}',
+                                          ),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null),
+                            ),
+                            child: profilePictureUrl.isEmpty &&
+                                    selectedImage == null
+                                ? Icon(
+                                    Icons.person,
+                                    size: 60,
+                                    color:
+                                        Theme.of(context).colorScheme.onSecondary,
+                                  )
+                                : null,
+                          ),
                         ),
-                        child: profilePictureUrl.isEmpty &&
-                                selectedImage == null
-                            ? Icon(
-                                Icons.person,
-                                size: 60,
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                              )
-                            : null,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 2,
-                      right: 2,
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1000),
-                          color: Theme.of(context).colorScheme.primaryContainer,
+                        Positioned(
+                          bottom: 2,
+                          right: 2,
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(1000),
+                              color: Theme.of(context).colorScheme.primaryContainer,
+                            ),
+                            child: const Icon(CustomIcons.pen, size: 13),
+                          ),
                         ),
-                        child: const Icon(CustomIcons.pen, size: 13),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 50),
+                  const Center(
+                    child: Text("Redes Sociais"),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      children: [
+                        ProfileTextField(
+                          textEditingController: linkedinController,
+                          icon: const Icon(CustomIcons.linkedin, size: 20),
+                          title: "Linkedin",
+                        ),
+                        const SizedBox(height: 35),
+                        ProfileTextField(
+                          textEditingController: facebookController,
+                          icon: const Icon(CustomIcons.facebook, size: 20),
+                          title: "Facebook",
+                        ),
+                        const SizedBox(height: 35),
+                        ProfileTextField(
+                          textEditingController: instagramController,
+                          icon: const Icon(CustomIcons.instagram, size: 20),
+                          title: "Instagram",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 50),
-              const Center(
-                child: Text("Redes Sociais"),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  children: [
-                    ProfileTextField(
-                      textEditingController: linkedinController,
-                      icon: const Icon(CustomIcons.linkedin, size: 20),
-                      title: "Linkedin",
-                    ),
-                    const SizedBox(height: 35),
-                    ProfileTextField(
-                      textEditingController: facebookController,
-                      icon: const Icon(CustomIcons.facebook, size: 20),
-                      title: "Facebook",
-                    ),
-                    const SizedBox(height: 35),
-                    ProfileTextField(
-                      textEditingController: instagramController,
-                      icon: const Icon(CustomIcons.instagram, size: 20),
-                      title: "Instagram",
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
           Positioned(
-            bottom: 100,
+            bottom: 50,
             right: 15,
             child: ActionButton(
               title: "Salvar",
