@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import 'package:connect/app/modules/auth/data/source/auth_storage_service.dart';
+import 'package:connect/app/core/services/database/my_local_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:connect/app/core/services/http/my_http_client.dart';
 import 'package:flutter/material.dart';
 
 class DioClient implements MyHttpClient {
   final Dio dio = Dio();
-  final AuthStorageService localStorage;
+  MyLocalStorage storage;
 
-  DioClient({required this.localStorage}) {
-    dio.options.baseUrl = 'http://192.168.1.68:9000';
+  DioClient({required this.storage}) {
+    dio.options.baseUrl = 'http://192.168.0.10:9000';
 
     dio.options.validateStatus = (status) {
       return status != null && status >= 200 && status < 300;
@@ -25,7 +25,7 @@ class DioClient implements MyHttpClient {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          String? accessToken = await localStorage.getAccessToken();
+          String? accessToken = await storage.get('accessToken');
 
           if (accessToken != null) {
             options.headers['Authorization'] = accessToken;
@@ -46,7 +46,7 @@ class DioClient implements MyHttpClient {
         },
         onError: (DioException error, handler) async {
           if (error.response?.statusCode == 401) {
-            String? refreshToken = await localStorage.getRefreshToken();
+            String? refreshToken = await storage.get('refreshToken');
 
             if (refreshToken != null) {
               try {
@@ -62,7 +62,7 @@ class DioClient implements MyHttpClient {
                 if (response.statusCode == 200) {
                   final newAccessToken = response.data['accessToken'];
 
-                  await localStorage.saveAccessToken(newAccessToken);
+                  await storage.set('accessToken', newAccessToken);
 
                   final options = error.requestOptions;
                   options.headers['Authorization'] = newAccessToken;
@@ -70,7 +70,9 @@ class DioClient implements MyHttpClient {
 
                   return handler.resolve(retryResponse);
                 } else {
-                  await localStorage.clearAuthData();
+                  await storage.remove('accessToken');
+                  await storage.remove('refreshToken');
+                  await storage.remove('user');
                   return handler.next(error);
                 }
               } catch (e) {

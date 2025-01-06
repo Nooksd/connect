@@ -36,7 +36,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     '/navigator/missions',
     '/navigator/post/create',
     '/navigator/explore',
-    '/navigator/profile',
+    '/navigator/profile/',
   ];
 
   void _navigateBottomBar(int index) {

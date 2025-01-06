@@ -1,19 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:connect/app/modules/profile/data/source/profile_api_service.dart';
-import 'package:connect/app/modules/profile/data/source/profile_storage_service.dart';
+import 'package:connect/app/core/services/database/my_local_storage.dart';
+import 'package:connect/app/core/services/http/my_http_client.dart';
 import 'package:connect/app/modules/profile/domain/entities/profile_user.dart';
 import 'package:connect/app/modules/profile/domain/repos/profile_repo.dart';
 
 class MongoProfileRepo implements ProfileRepo {
-  final ProfileApiService profileApiService;
-  final ProfileStorageService profileStorageService;
+  MyHttpClient http;
+  MyLocalStorage storage;
 
-  MongoProfileRepo({
-    required this.profileApiService,
-    required this.profileStorageService,
-  });
+  MongoProfileRepo({required this.http, required this.storage});
 
   @override
   Future<ProfileUser?> fetchUserProfile(String uid) async {
@@ -26,15 +23,18 @@ class MongoProfileRepo implements ProfileRepo {
   }
 
   @override
-  Future<void> updateUserProfile(ProfileUser updatedProfileUser, File? avatar) async {
+  Future<void> updateUserProfile(ProfileUser body, File? avatar) async {
     try {
-      final response = await profileApiService.updateUser(updatedProfileUser, avatar);
+      Map<String, dynamic> data = body.toJson();
+      final uid = body.uid;
+      final response = await http.put('/users/update/$uid', data: data);
+
       final userData = response["data"]["user"];
 
       if (userData == null) {
         return;
       }
-      await profileStorageService.setuser(userData);
+      await storage.set('user', jsonEncode(userData));
     } catch (e) {
       throw Exception(e);
     }
@@ -43,7 +43,7 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> getSelfProfile() async {
     try {
-      final user = await profileStorageService.getUser();
+      final user = await storage.get('user');
       final userData = jsonDecode(user ?? "");
 
       if (user == null) {
@@ -59,14 +59,14 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> getUpdatedSelfProfile() async {
     try {
-      final response = await profileApiService.getCurrentUser();
+      final response = await http.get('/users/get-current-user');
 
       if (response['status'] == 200) {
         final data = response['data'];
 
         final userData = data['user'];
 
-        await profileStorageService.setuser(userData);
+       await storage.set('user', jsonEncode(userData));
 
         return ProfileUser.fromMap(userData);
       }

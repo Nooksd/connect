@@ -1,21 +1,25 @@
 import 'dart:convert';
 
-import 'package:connect/app/modules/auth/data/source/auth_api_service.dart';
-import 'package:connect/app/modules/auth/data/source/auth_storage_service.dart';
+import 'package:connect/app/core/services/database/my_local_storage.dart';
+import 'package:connect/app/core/services/http/my_http_client.dart';
 import 'package:connect/app/modules/auth/domain/entities/app_user.dart';
 import 'package:connect/app/modules/auth/domain/repos/auth_repo.dart';
 
 class MongoAuthRepo implements AuthRepo {
-  final AuthApiService authApiService;
-  final AuthStorageService authStorageService;
+  MyHttpClient http;
+  MyLocalStorage storage;
 
-  MongoAuthRepo(
-      {required this.authApiService, required this.authStorageService});
+  MongoAuthRepo({required this.http, required this.storage});
 
   @override
   Future<AppUser?> loginWithEmailPassword(String email, String password) async {
     try {
-      final response = await authApiService.login(email, password);
+      final body = {
+        'email': email,
+        'password': password,
+      };
+      final data = jsonEncode(body);
+      final response = await http.post('/auth/login', data: data);
 
       if (response['status'] == 200) {
         final data = response['data'];
@@ -24,8 +28,9 @@ class MongoAuthRepo implements AuthRepo {
         final newRefreshToken = data['refreshToken'];
         final userData = data['user'];
 
-        await authStorageService.saveAuthData(
-            newAccessToken, newRefreshToken, userData);
+        await storage.set('accessToken', newAccessToken);
+        await storage.set('refreshToken', newRefreshToken);
+        await storage.set('user', jsonEncode(userData));
 
         return AppUser.fromMap({
           'name': userData['name'],
@@ -42,8 +47,8 @@ class MongoAuthRepo implements AuthRepo {
   @override
   Future<AppUser?> isLoggedIn() async {
     try {
-      final user = await authStorageService.getUser();
-      final token = await authStorageService.getAccessToken();
+      final user = await await storage.get('user');
+      final token = await storage.get('accessToken');
 
       final userData = user is String ? jsonDecode(user) : null;
 
@@ -62,6 +67,8 @@ class MongoAuthRepo implements AuthRepo {
 
   @override
   Future<void> logout() async {
-    await authStorageService.clearAuthData();
+     await storage.remove('accessToken');
+    await storage.remove('refreshToken');
+    await storage.remove('user');
   }
 }

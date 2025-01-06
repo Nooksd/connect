@@ -7,9 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostCubit extends Cubit<PostState> {
   final PostRepo postRepo;
+  double scrollPosition = 0.0; // Para salvar a posição de rolagem
 
   PostCubit({required this.postRepo}) : super(PostInitial());
 
+  /// Cria um novo post com ou sem uma imagem associada
   Future<void> createPost(Post post, File? imageFile) async {
     emit(PostLoading());
     String? imageUrl;
@@ -19,19 +21,21 @@ class PostCubit extends Cubit<PostState> {
       if (imageFile != null) {
         emit(PostUploading());
         imageUrl = await postRepo.uploadImage(imageFile);
-        if (imageUrl != '') {
+        if (imageUrl.isNotEmpty) {
           updatedPost = post.updateImage(newImageUrl: imageUrl);
         }
       }
 
       await postRepo.createPost(updatedPost);
 
+      // Recarrega os posts após criar um novo
       await getPosts(1);
     } catch (e) {
       emit(PostError(e.toString()));
     }
   }
 
+  /// Obtém os posts paginados
   Future<void> getPosts(int page) async {
     try {
       if (page == 1) {
@@ -53,6 +57,7 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  /// Exclui um post pelo ID
   Future<void> deletePost(String postId) async {
     try {
       await postRepo.deletePost(postId);
@@ -61,6 +66,7 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  /// Adiciona um like em um post
   Future<void> likePost(String postId) async {
     try {
       await postRepo.likePost(postId);
@@ -69,6 +75,7 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  /// Remove um like de um post
   Future<void> dislikePost(String postId) async {
     try {
       await postRepo.dislikePost(postId);
@@ -77,6 +84,7 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  /// Adiciona um comentário a um post
   Future<void> commentPost(String postId, String comment) async {
     try {
       await postRepo.commentPost(postId, comment);
@@ -85,11 +93,17 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  /// Exclui um comentário de um post
   Future<void> deleteComment(String postId, String commentId) async {
     try {
       await postRepo.deleteComment(postId, commentId);
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  /// Salva a posição do scroll
+  void saveScrollPosition(double position) {
+    scrollPosition = position;
   }
 }
