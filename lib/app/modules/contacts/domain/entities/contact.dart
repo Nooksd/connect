@@ -1,10 +1,10 @@
-class AppUser {
+class Contact {
   final String uid;
   final String name;
   final String role;
   final String profilePictureUrl;
 
-  AppUser({
+  Contact({
     required this.uid,
     required this.name,
     required this.role,
@@ -20,8 +20,8 @@ class AppUser {
     };
   }
 
-  factory AppUser.fromMap(Map<String, dynamic> map) {
-    return AppUser(
+  factory Contact.fromJson(Map<String, dynamic> map) {
+    return Contact(
       uid: map['id'] as String,
       name: map['name'] as String,
       role: map['role'],

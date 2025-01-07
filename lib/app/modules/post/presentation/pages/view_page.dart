@@ -99,7 +99,7 @@ class _ViewPageState extends State<ViewPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirmação'),
-          content: const Text('Tem certeza de que deseja apagar este post?'),
+          content: const Text('Tem certeza de que deseja apagar este comentário?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),

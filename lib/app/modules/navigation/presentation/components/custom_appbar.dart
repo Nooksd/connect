@@ -33,7 +33,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       1: [
         IconButton(
           onPressed: () {
-            Modular.to.pushNamed('/market');
+            // Modular.to.pushNamed('/market');
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Função ainda não implementada!')),
+            );
           },
           icon: const Icon(CustomIcons.buy),
         ),

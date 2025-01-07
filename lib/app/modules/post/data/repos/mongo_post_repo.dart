@@ -12,10 +12,7 @@ class MongoPostRepo implements PostRepo {
   @override
   Future<void> createPost(Post post) async {
     try {
-      print(post.toJson());
       final response = await http.post('/post/create', data: post.toJson());
-
-      print(response);
 
       if (response["status"] != 200) {
         throw Exception('Falha ao deletar post');
@@ -67,8 +64,6 @@ class MongoPostRepo implements PostRepo {
     try {
       final body = {'image': imageFile};
       final response = await http.multiPart('/post/image/upload', body: body);
-
-      print(response);
 
       if (response["status"] == 200) {
         final imageUrl = response["data"]["url"];

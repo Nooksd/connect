@@ -8,7 +8,6 @@ class MarketPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: CustomAppBar(selectedIndex: 5),
-      body: Text(""),
     );
   }
 }

@@ -15,8 +15,14 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> fetchUserProfile(String uid) async {
     try {
-      // TODO: implement
-      throw UnimplementedError();
+      final response = await http.get('/users/$uid');
+
+      if (response["status"] == 200) {
+        final user = response['data'];
+
+        return ProfileUser.fromMap(user);
+      }
+      return null;
     } catch (e) {
       return null;
     }

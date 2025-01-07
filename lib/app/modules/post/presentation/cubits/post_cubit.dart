@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PostCubit extends Cubit<PostState> {
   final PostRepo postRepo;
   double scrollPosition = 0.0;
+  int pageIndex = 1;
 
   PostCubit({required this.postRepo}) : super(PostInitial());
 
@@ -111,7 +112,8 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
-  void saveScrollPosition(double position) {
+  void saveScrollPosition(double position, int index) {
     scrollPosition = position;
+    pageIndex = index;
   }
 }

@@ -42,9 +42,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   final List<String> _routes = [
     '/navigator/post/feed',
-    '/navigator/missions',
+    '/navigator/missions/',
     '/navigator/post/create',
-    '/navigator/explore',
+    '/navigator/explore/',
     '/navigator/profile/',
   ];
 

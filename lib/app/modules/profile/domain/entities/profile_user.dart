@@ -6,6 +6,7 @@ class ProfileUser extends AppUser {
   final int pCurrent;
 
   final String phoneNumber;
+  final String email;
   final DateTime entryDate;
   final DateTime birthday;
 
@@ -15,10 +16,10 @@ class ProfileUser extends AppUser {
 
   ProfileUser({
     required super.uid,
-    required super.email,
     required super.name,
     required super.role,
     required super.profilePictureUrl,
+    required this.email,
     required this.pTotal,
     required this.pSpent,
     required this.pCurrent,

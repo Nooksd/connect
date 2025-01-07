@@ -13,7 +13,13 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void navigateToTheme() => Modular.to.pushNamed("/settings/theme");
+    void navigateToTheme() {
+          // Modular.to.pushNamed("/settings/theme"),
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Função ainda não implementada!')),
+          );
+        }
 
     void navigateToProfile() {
       final user = context.read<ProfileCubit>().currentUser;

@@ -8,8 +8,8 @@ class ProfileModule extends Module {
   @override
   final List<ModularRoute> routes = [
     ChildRoute(
-      '/',
-      child: (_, __) => const ProfilePage(),
+      '/:uid',
+      child: (_, args) => ProfilePage(uid: args.params['uid']),
     ),
   ];
 }

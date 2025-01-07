@@ -1,3 +1,4 @@
+import 'package:connect/app/modules/navigation/presentation/components/custom_appbar.dart';
 import 'package:connect/app/modules/profile/presentation/components/data_tile.dart';
 import 'package:connect/app/modules/profile/presentation/components/points_tile.dart';
 import 'package:connect/app/modules/profile/presentation/components/social_tile.dart';
@@ -42,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
           final user = state.profileUser;
 
           return Scaffold(
+            appBar: widget.uid?.isEmpty ?? true ? null : const CustomAppBar(selectedIndex: 5),
             body: RefreshIndicator(
               onRefresh: () async {
                 if (widget.uid?.isEmpty ?? true) {

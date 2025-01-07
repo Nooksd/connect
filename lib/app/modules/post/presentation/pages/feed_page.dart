@@ -28,6 +28,7 @@ class FeedPageState extends State<FeedPage> {
     _scrollController = ScrollController(
       initialScrollOffset: cubit.scrollPosition,
     )..addListener(_onScroll);
+    pageIndex = cubit.pageIndex;
 
     if (cubit.state is! PostsLoaded) {
       cubit.getPosts(pageIndex);
@@ -41,7 +42,7 @@ class FeedPageState extends State<FeedPage> {
   }
 
   void _onScroll() {
-    cubit.saveScrollPosition(_scrollController.offset);
+    cubit.saveScrollPosition(_scrollController.offset, pageIndex);
 
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent &&
@@ -56,6 +57,7 @@ class FeedPageState extends State<FeedPage> {
     });
 
     pageIndex++;
+
     await cubit.getPosts(pageIndex);
 
     setState(() {
@@ -161,7 +163,7 @@ class FeedPageState extends State<FeedPage> {
               onRefresh: () async {
                 pageIndex = 1;
 
-                cubit.saveScrollPosition(0.0);
+                cubit.saveScrollPosition(0.0, pageIndex);
 
                 await cubit.getPosts(pageIndex);
               },

@@ -14,7 +14,7 @@ class PostModule extends Module {
     ),
     ChildRoute(
       '/create',
-      child: (_, __) => PostPage(),
+      child: (_, __) => const PostPage(),
     ),
   ];
 }
