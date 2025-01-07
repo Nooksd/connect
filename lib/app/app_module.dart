@@ -6,8 +6,6 @@ import 'package:connect/app/modules/auth/data/repos/mongo_auth_repo.dart';
 import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
 import 'package:connect/app/modules/birthdates/birthdays_module.dart';
 import 'package:connect/app/modules/contacts/contacts_module.dart';
-import 'package:connect/app/modules/contacts/data/mongo_contact_repo.dart';
-import 'package:connect/app/modules/contacts/presentation/cubits/contact_cubit.dart';
 import 'package:connect/app/modules/events/event_module.dart';
 import 'package:connect/app/modules/navigation/navigation_module.dart';
 import 'package:connect/app/modules/post/data/repos/mongo_post_repo.dart';
@@ -25,15 +23,16 @@ class AppModule extends Module {
   final List<Bind> binds = [
     Bind.singleton((i) => DioClient(storage: i())),
     Bind.singleton((i) => SharedPreferencesClient()),
-    Bind.singleton((i) => AuthCubit(authRepo: i())),
-    Bind.singleton((i) => PostCubit(postRepo: i())),
-    Bind.singleton((i) => ProfileCubit(profileRepo: i())),
-    Bind.singleton((i) => ContactCubit(contactRepo: i())),
 
-    Bind.singleton((i) => MongoProfileRepo(http: i(), storage: i())),
+    Bind.singleton((i) => AuthCubit(authRepo: i())),
     Bind.singleton((i) => MongoAuthRepo(http: i(), storage: i())),
+
+    Bind.singleton((i) => PostCubit(postRepo: i())),
     Bind.singleton((i) => MongoPostRepo(http: i())),
-    Bind.singleton((i) => MongoContactRepo(http: i())),
+
+    Bind.singleton((i) => ProfileCubit(profileRepo: i())),
+    Bind.singleton((i) => MongoProfileRepo(http: i(), storage: i())),
+
   ];
 
   @override
