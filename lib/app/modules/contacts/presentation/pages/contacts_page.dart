@@ -129,41 +129,46 @@ class _ContactsPageState extends State<ContactsPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 40, top: 20),
-                        child: SingleChildScrollView(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: contacts.length,
-                            itemBuilder: (context, index) {
-                              final contact = contacts[index];
-                              return GestureDetector(
-                                onTap: () => openProfile(contact.uid),
-                                child: ListTile(
-                                  leading: SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child: ClipOval(
-                                      child: Image.network(
-                                        contact.profilePictureUrl,
-                                        fit: BoxFit.cover,
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            await cubit.getContacts(searchController.text.toString());
+                          },
+                          child: SingleChildScrollView(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: contacts.length,
+                              itemBuilder: (context, index) {
+                                final contact = contacts[index];
+                                return GestureDetector(
+                                  onTap: () => openProfile(contact.uid),
+                                  child: ListTile(
+                                    leading: SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: ClipOval(
+                                        child: Image.network(
+                                          contact.profilePictureUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      contact.name,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      contact.role,
+                                      style: const TextStyle(
+                                        fontStyle: FontStyle.italic,
                                       ),
                                     ),
                                   ),
-                                  title: Text(
-                                    contact.name,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    contact.role,
-                                    style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
