@@ -80,7 +80,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                   );
                 }
                 return IconThemeData(
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.4),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
                   size: 21,
                 );
               },

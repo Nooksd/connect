@@ -32,4 +32,40 @@ class MongoMissionRepo implements MissionRepo {
       throw Exception(e);
     }
   }
+
+  @override
+  Future<bool> verifyCompletion(String missionId) async {
+    try {
+      final response = await http.get('/mission/verify-completion/$missionId');
+
+      if (response["status"] == 200) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<bool> sendValidation(String missionId, String url) async {
+    try {
+      final data = {
+        "missionId": missionId,
+        "url": url,
+      };
+      print(data);
+      final response = await http.post('/validation/create', data: data);
+
+
+      if (response["status"] == 200) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -17,6 +17,7 @@ class MissionsPage extends StatefulWidget {
 class _MissionsPageState extends State<MissionsPage> {
   final MissionCubit cubit = Modular.get<MissionCubit>();
   final String? userId = Modular.get<AuthCubit>().currentUser?.uid;
+  final List<String> appMissions = ["FEEDPOST", "FEEDHASHTAG", "FEEDIMAGE"];
 
   @override
   void initState() {
@@ -25,12 +26,100 @@ class _MissionsPageState extends State<MissionsPage> {
     cubit.getMissions();
   }
 
-  void verifyCompletion(String missionId) {
-    print(missionId);
+  void showValidationModal(String missionId) {
+    final TextEditingController urlController = TextEditingController();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Função ainda não implementada!')),
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Validar Missão'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                  'Por favor, insira a URL para enviar a missão para validação:'),
+              const SizedBox(height: 10),
+              TextField(
+                controller: urlController,
+                decoration: const InputDecoration(
+                  hintText: 'URL para validação',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                sendValidation(urlController.text, missionId);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Confirmar'),
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  void verifyCompletion(String missionId, String missionType) async {
+    if (appMissions.contains(missionType)) {
+      final bool status = await cubit.verifyCompletion(missionId);
+
+      if (!mounted) return;
+
+      if (status) {
+        final missionIndex = cubit.state.missions
+            .indexWhere((mission) => mission.id == missionId);
+
+        if (missionIndex == -1) return;
+
+        setState(() {
+          cubit.state.missions.removeAt(missionIndex);
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Missão completa com sucesso')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Missão não completa')),
+        );
+      }
+    } else {
+      showValidationModal(missionId);
+    }
+  }
+
+  void sendValidation(String url, String missionId) async {
+
+    if (url.isNotEmpty) {
+      final bool status = await cubit.sendValidation(missionId, url);
+
+      if (!mounted) return;
+
+      if (status) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Missão enviada para ser verificada')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Falha ao enviar pedido de verificação')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, insira uma URL válida')),
+      );
+    }
   }
 
   @override
@@ -118,7 +207,8 @@ class _MissionsPageState extends State<MissionsPage> {
                         }
 
                         return GestureDetector(
-                          onTap: () => verifyCompletion(mission.id),
+                          onTap: () =>
+                              verifyCompletion(mission.id, mission.missionType),
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 15),
                             width: double.infinity,

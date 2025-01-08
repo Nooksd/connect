@@ -2,18 +2,20 @@ class Mission {
   final String id;
   final String ownerId;
   final String text;
+  final String missionType;
+  final String hashtag;  
   final int duration;
-  final DateTime endDate; 
+  final DateTime endDate;
   final int value;
   final List<String> completed;
   final DateTime createdAt;
-
-
 
   Mission({
     required this.id,
     required this.ownerId,
     required this.text,
+    required this.missionType,
+    required this.hashtag,
     required this.duration,
     required this.endDate,
     required this.value,
@@ -26,11 +28,13 @@ class Mission {
       'id': id,
       'ownerId': ownerId,
       'text': text,
+      'missionType': missionType,
+      'hashtag': hashtag,
       'duration': duration,
-      'endDate': endDate,
+      'endDate': endDate.toIso8601String(),
       'value': value,
       'completed': completed,
-      'createdAt': createdAt
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
@@ -39,11 +43,13 @@ class Mission {
       id: map['id'],
       ownerId: map['ownerId'],
       text: map['text'],
+      missionType: map['missionType'],
+      hashtag: map['hashtag'] ?? '',
       duration: map['duration'],
-      endDate: DateTime.parse(map['endDate'] as String),
+      endDate: DateTime.parse(map['endDate']),
       value: map['value'],
       completed: List<String>.from(map['completed'] ?? []),
-      createdAt: DateTime.parse(map['createdAt'] as String)
+      createdAt: DateTime.parse(map['createdAt']),
     );
   }
 }

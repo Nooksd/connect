@@ -22,4 +22,32 @@ class MissionCubit extends Cubit<MissionState> {
       emit(MissionError(e.toString()));
     }
   }
+
+  Future<bool> verifyCompletion(String missionId) async {
+    try {
+      final response = await missionRepo.verifyCompletion(missionId);
+
+      if (response) {
+        return true;
+      }
+      
+      return false;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> sendValidation(String missionId, String url) async {
+    try {
+      final response = await missionRepo.sendValidation(missionId, url);
+
+      if (response) {
+        return true;
+      }
+      
+      return false;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
