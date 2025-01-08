@@ -1,20 +1,22 @@
+import 'package:connect/app/core/services/firebase_messaging_service.dart';
 import 'package:connect/app/modules/navigation/presentation/components/custom_appbar.dart';
 import 'package:connect/app/modules/navigation/presentation/components/custom_navigation_destination.dart';
 import 'package:connect/app/core/custom/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-// ignore: library_private_types_in_public_api
-final GlobalKey<_NavigatorPageState> navigatorPageKey = GlobalKey<_NavigatorPageState>();
+final GlobalKey<NavigatorPageState> navigatorPageKey =
+    GlobalKey<NavigatorPageState>();
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({super.key});
 
   @override
-  State<NavigatorPage> createState() => _NavigatorPageState();
+  State<NavigatorPage> createState() => NavigatorPageState();
 }
 
-class _NavigatorPageState extends State<NavigatorPage> {
+class NavigatorPageState extends State<NavigatorPage> {
+  final FirebaseMessagingService firebaseMessagingService = Modular.get<FirebaseMessagingService>();
   String userName = "";
   int _selectedIndex = 0;
 
@@ -38,6 +40,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
       userName = name;
     }
+
+    firebaseMessagingService.initialize();
   }
 
   final List<String> _routes = [

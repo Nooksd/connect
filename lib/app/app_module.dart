@@ -1,6 +1,8 @@
 import 'package:connect/app/core/custom/splash_screen.dart';
 import 'package:connect/app/core/services/database/shared_preferences_client.dart';
+import 'package:connect/app/core/services/firebase_messaging_service.dart';
 import 'package:connect/app/core/services/http/dio_client.dart';
+import 'package:connect/app/core/services/notification_service.dart';
 import 'package:connect/app/modules/auth/auth_module.dart';
 import 'package:connect/app/modules/auth/data/repos/mongo_auth_repo.dart';
 import 'package:connect/app/modules/auth/presentation/cubits/auth_cubit.dart';
@@ -8,6 +10,7 @@ import 'package:connect/app/modules/birthdates/birthdays_module.dart';
 import 'package:connect/app/modules/contacts/contacts_module.dart';
 import 'package:connect/app/modules/events/event_module.dart';
 import 'package:connect/app/modules/navigation/navigation_module.dart';
+import 'package:connect/app/modules/notifications/presentation/cubits/notification_cubit.dart';
 import 'package:connect/app/modules/post/data/repos/mongo_post_repo.dart';
 import 'package:connect/app/modules/post/presentation/cubits/post_cubit.dart';
 import 'package:connect/app/modules/post/presentation/pages/view_page.dart';
@@ -21,18 +24,18 @@ import 'package:flutter_modular/flutter_modular.dart';
 class AppModule extends Module {
   @override
   final List<Bind> binds = [
+    Bind.singleton((i) => NotificationService()),
+    Bind.singleton((i) => FirebaseMessagingService(notificationService: i())),
+
     Bind.singleton((i) => DioClient(storage: i())),
     Bind.singleton((i) => SharedPreferencesClient()),
-
     Bind.singleton((i) => AuthCubit(authRepo: i())),
     Bind.singleton((i) => MongoAuthRepo(http: i(), storage: i())),
-
     Bind.singleton((i) => PostCubit(postRepo: i())),
     Bind.singleton((i) => MongoPostRepo(http: i())),
-
     Bind.singleton((i) => ProfileCubit(profileRepo: i())),
     Bind.singleton((i) => MongoProfileRepo(http: i(), storage: i())),
-
+    Bind.singleton((i) => NotificationCubit()),
   ];
 
   @override
@@ -84,6 +87,5 @@ class AppModule extends Module {
       '/view-post/:postId',
       child: (_, args) => ViewPage(postId: args.params['postId']),
     ),
-
   ];
 }

@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "554862906043",
-    "project_id": "connect-45402",
-    "storage_bucket": "connect-45402.firebasestorage.app"
+    "project_number": "817798605454",
+    "project_id": "connect-7c7fb",
+    "storage_bucket": "connect-7c7fb.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:554862906043:android:257035961c103294d0779e",
+        "mobilesdk_app_id": "1:817798605454:android:8499becd9e1e6ae3c137df",
+        "android_client_info": {
+          "package_name": "br.com.innova_energy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjHFeUypEvaflLPel1HGme6hxXx__pcAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817798605454:android:ceac209a0dc37522c137df",
         "android_client_info": {
           "package_name": "br.com.innova_energy.connect"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDTMZvJ4TJ2DATuZfd5itey2l5ihyW67WA"
+          "current_key": "AIzaSyCjHFeUypEvaflLPel1HGme6hxXx__pcAE"
         }
       ],
       "services": {
