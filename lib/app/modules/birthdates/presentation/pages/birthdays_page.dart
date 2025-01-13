@@ -79,39 +79,37 @@ class _BirthdaysPageState extends State<BirthdaysPage> {
                             onRefresh: () async {
                               await cubit.getBirthdays();
                             },
-                            child: SingleChildScrollView(
-                              child: ListView.builder(
-                                itemCount: birthdays.length,
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemBuilder: (context, index) => ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        birthdays[index].profilePictureUrl),
+                            child: ListView.builder(
+                              itemCount: birthdays.length,
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (context, index) => ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      birthdays[index].profilePictureUrl),
+                                ),
+                                title: Text(
+                                  birthdays[index].name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
-                                  title: Text(
-                                    birthdays[index].name,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
+                                ),
+                                subtitle: Text(
+                                  birthdays[index].role,
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
                                   ),
-                                  subtitle: Text(
-                                    birthdays[index].role,
-                                    style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                  trailing: Text(
-                                    birthdays[index].birthday.isToday()
-                                        ? "Hoje!"
-                                        : DateFormat("dd/MM")
-                                            .format(birthdays[index].birthday),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 16,
-                                    ),
+                                ),
+                                trailing: Text(
+                                  birthdays[index].birthday.isToday()
+                                      ? "Hoje!"
+                                      : DateFormat("dd/MM")
+                                          .format(birthdays[index].birthday),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 16,
                                   ),
                                 ),
                               ),

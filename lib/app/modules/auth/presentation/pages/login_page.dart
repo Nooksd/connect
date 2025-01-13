@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                           value: _keedLoggedIn,
                           shape: const CircleBorder(),
                           activeColor: Theme.of(context).colorScheme.primary,
+                          checkColor: Colors.white,
                           side: BorderSide(
                             width: 3,
                             color: Theme.of(context).colorScheme.primary,

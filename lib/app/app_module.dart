@@ -10,7 +10,9 @@ import 'package:connect/app/modules/birthdates/birthdays_module.dart';
 import 'package:connect/app/modules/contacts/contacts_module.dart';
 import 'package:connect/app/modules/events/event_module.dart';
 import 'package:connect/app/modules/navigation/navigation_module.dart';
-import 'package:connect/app/modules/notifications/presentation/cubits/notification_cubit.dart';
+import 'package:connect/app/modules/notifications/data/mongo_notification_repo.dart';
+import 'package:connect/app/modules/notifications/notification_module.dart';
+import 'package:connect/app/modules/notifications/presentation/cubits/noification_cubit.dart';
 import 'package:connect/app/modules/post/data/repos/mongo_post_repo.dart';
 import 'package:connect/app/modules/post/presentation/cubits/post_cubit.dart';
 import 'package:connect/app/modules/post/presentation/pages/view_page.dart';
@@ -26,16 +28,16 @@ class AppModule extends Module {
   final List<Bind> binds = [
     Bind.singleton((i) => NotificationService()),
     Bind.singleton((i) => FirebaseMessagingService(notificationService: i())),
-
     Bind.singleton((i) => DioClient(storage: i())),
     Bind.singleton((i) => SharedPreferencesClient()),
     Bind.singleton((i) => AuthCubit(authRepo: i())),
     Bind.singleton((i) => MongoAuthRepo(http: i(), storage: i())),
+    Bind.singleton((i) => NotificationCubit(notificationRepo: i())),
+    Bind.singleton((i) => MongoNotificationRepo(http: i())),
     Bind.singleton((i) => PostCubit(postRepo: i())),
     Bind.singleton((i) => MongoPostRepo(http: i())),
     Bind.singleton((i) => ProfileCubit(profileRepo: i())),
     Bind.singleton((i) => MongoProfileRepo(http: i(), storage: i())),
-    Bind.singleton((i) => NotificationCubit()),
   ];
 
   @override
@@ -57,6 +59,11 @@ class AppModule extends Module {
       '/navigator',
       transition: TransitionType.noTransition,
       module: NavigationModule(),
+    ),
+    ModuleRoute(
+      '/notifications',
+      transition: TransitionType.noTransition,
+      module: NotificationModule(),
     ),
     ModuleRoute(
       '/settings',

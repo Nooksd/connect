@@ -59,6 +59,13 @@ class _PostPageState extends State<PostPage> {
   }
 
   Future<void> createPost() async {
+    if (textController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Post precisa de texto!')),
+      );
+      return;
+    }
+
     final post = Post(
       text: textController.text,
       hashtags:

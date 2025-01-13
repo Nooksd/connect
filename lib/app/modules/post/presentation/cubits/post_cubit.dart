@@ -13,7 +13,6 @@ class PostCubit extends Cubit<PostState> {
   PostCubit({required this.postRepo}) : super(PostInitial());
 
   Future<void> createPost(Post post, File? imageFile) async {
-    emit(PostLoading());
     String? imageUrl;
     Post updatedPost = post;
 
@@ -31,6 +30,7 @@ class PostCubit extends Cubit<PostState> {
       await getPosts(1);
     } catch (e) {
       emit(PostError(e.toString()));
+      await getPosts(1);
     }
   }
 
@@ -77,6 +77,7 @@ class PostCubit extends Cubit<PostState> {
       await postRepo.deletePost(postId);
     } catch (e) {
       emit(PostError(e.toString()));
+      await getPosts(1);
     }
   }
 

@@ -25,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Text("Olá, $userName"),
         IconButton(
           onPressed: () {
-            Modular.to.pushNamed('/notifications');
+            Modular.to.pushNamed('/notifications/');
           },
           icon: const Icon(CustomIcons.notifications, size: 17),
         ),

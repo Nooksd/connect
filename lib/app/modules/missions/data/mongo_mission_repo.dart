@@ -55,7 +55,6 @@ class MongoMissionRepo implements MissionRepo {
         "missionId": missionId,
         "url": url,
       };
-      print(data);
       final response = await http.post('/validation/create', data: data);
 
 

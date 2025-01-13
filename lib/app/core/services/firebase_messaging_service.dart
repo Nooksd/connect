@@ -1,6 +1,6 @@
 import 'package:connect/app/core/services/notification_service.dart';
+import 'package:connect/app/modules/notifications/presentation/cubits/noification_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class FirebaseMessagingService {
@@ -18,11 +18,17 @@ class FirebaseMessagingService {
 
     getDeviceFirebaseToken();
     _onMessage();
+    _onMessageOpenedApp();
   }
 
   getDeviceFirebaseToken() async {
     final token = await FirebaseMessaging.instance.getToken();
-    debugPrint(token);
+    final NotificationCubit notificationCubit =
+        Modular.get<NotificationCubit>();
+
+    if (token != null) {
+      await notificationCubit.registerDeviceToken(token);
+    }
   }
 
   _onMessage() async {
@@ -49,7 +55,7 @@ class FirebaseMessagingService {
 
   _goToPageAfterMessage(RemoteMessage message) {
     final String route = message.data["route"] ?? "/notifications";
-    if(route.isNotEmpty) {
+    if (route.isNotEmpty) {
       Modular.to.pushNamed(route);
     }
   }
