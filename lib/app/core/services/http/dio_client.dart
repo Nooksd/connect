@@ -10,7 +10,7 @@ class DioClient implements MyHttpClient {
   MyLocalStorage storage;
 
   DioClient({required this.storage}) {
-    dio.options.baseUrl = 'https://go-server-production-a6cf.up.railway.app';
+    dio.options.baseUrl = 'https://192.168.1.131:9000';
 
     dio.options.validateStatus = (status) {
       return status != null && status >= 200 && status < 300;
