@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:connect/app/core/services/database/my_local_storage.dart';
+import 'package:connect/app/core/services/storage/my_local_storage.dart';
 import 'package:connect/app/core/services/http/my_http_client.dart';
 import 'package:connect/app/modules/profile/domain/entities/profile_user.dart';
 import 'package:connect/app/modules/profile/domain/repos/profile_repo.dart';

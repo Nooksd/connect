@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:connect/app/core/services/database/my_local_storage.dart';
+import 'package:connect/app/core/services/storage/my_local_storage.dart';
 import 'package:connect/app/core/services/http/my_http_client.dart';
 import 'package:connect/app/modules/auth/domain/entities/app_user.dart';
 import 'package:connect/app/modules/auth/domain/repos/auth_repo.dart';

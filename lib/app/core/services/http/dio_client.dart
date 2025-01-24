@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:connect/app/core/services/database/my_local_storage.dart';
+import 'package:connect/app/core/services/storage/my_local_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:connect/app/core/services/http/my_http_client.dart';
 import 'package:flutter/material.dart';

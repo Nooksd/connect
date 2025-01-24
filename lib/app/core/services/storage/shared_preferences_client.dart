@@ -1,4 +1,4 @@
-import 'package:connect/app/core/services/database/my_local_storage.dart';
+import 'package:connect/app/core/services/storage/my_local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesClient implements MyLocalStorage {
