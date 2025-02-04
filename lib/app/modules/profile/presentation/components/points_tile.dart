@@ -27,6 +27,9 @@ class PointsTile extends StatelessWidget {
             ),
             Text(
               number,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,

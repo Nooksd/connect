@@ -38,8 +38,6 @@ class MongoNotificationRepo implements NotificationRepo {
     try {
       final response = await http.put('/notification/read/$notificationId');
 
-      print(response);
-
       if (response["status"] != 200) {
         throw Exception('Falha ao ler notificação');
       }

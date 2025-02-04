@@ -15,7 +15,7 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> fetchUserProfile(String uid) async {
     try {
-      final response = await http.get('/users/$uid');
+      final response = await http.get('/user/$uid');
 
       if (response["status"] == 200) {
         final user = response['data'];
@@ -33,7 +33,7 @@ class MongoProfileRepo implements ProfileRepo {
     try {
       Map<String, dynamic> data = body.toJson();
       final uid = body.uid;
-      final response = await http.put('/users/update/$uid', data: data);
+      final response = await http.put('/user/update/$uid', data: data);
 
       if (avatar != null) {
         await _uploadAvatar(uid, avatar);
@@ -69,7 +69,7 @@ class MongoProfileRepo implements ProfileRepo {
   @override
   Future<ProfileUser?> getUpdatedSelfProfile() async {
     try {
-      final response = await http.get('/users/get-current-user');
+      final response = await http.get('/user/get-current-user');
 
       if (response['status'] == 200) {
         final data = response['data'];

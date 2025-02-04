@@ -33,6 +33,7 @@ class SocialTile extends StatelessWidget {
                 text,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                softWrap: false,
               ),
             )
           ],

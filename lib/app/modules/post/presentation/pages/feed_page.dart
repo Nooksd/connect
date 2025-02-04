@@ -211,7 +211,7 @@ class FeedPageState extends State<FeedPage> {
 
         return const Scaffold(
           body: Center(
-            child: Text("Erro ao carregar posts."),
+            child: Text("Sem posts no feed"),
           ),
         );
       },

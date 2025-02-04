@@ -27,7 +27,15 @@ class DataTile extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Text(number),
+            SizedBox(
+              width: 150,
+              child: Text(
+                number,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+              ),
+            )
           ],
         )
       ],
