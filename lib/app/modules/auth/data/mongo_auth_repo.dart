@@ -12,11 +12,13 @@ class MongoAuthRepo implements AuthRepo {
   MongoAuthRepo({required this.http, required this.storage});
 
   @override
-  Future<AppUser?> loginWithEmailPassword(String email, String password) async {
+  Future<AppUser?> loginWithEmailPassword(
+      String email, String password, bool keepLoggedIn) async {
     try {
       final body = {
         'email': email,
         'password': password,
+        'keepConnection': keepLoggedIn
       };
       final data = jsonEncode(body);
       final response = await http.post('/auth/login', data: data);

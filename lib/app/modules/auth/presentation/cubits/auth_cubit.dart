@@ -25,11 +25,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   AppUser? get currentUser => _currentUser;
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password, bool keedLoggedIn) async {
     try {
       emit(AuthLoading());
 
-      final user = await authRepo.loginWithEmailPassword(email, password);
+      final user =
+          await authRepo.loginWithEmailPassword(email, password, keedLoggedIn);
 
       if (user != null) {
         _currentUser = user;
@@ -53,5 +54,4 @@ class AuthCubit extends Cubit<AuthState> {
     emit(Unauthenticated());
     Modular.to.navigate('/');
   }
-
 }

@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     final authCubit = context.read<AuthCubit>();
 
     if (email.isNotEmpty && password.isNotEmpty) {
-      authCubit.login(email, password);
+      authCubit.login(email, password, _keedLoggedIn);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Email e Senha necessários")));
@@ -148,7 +148,8 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {},
                     child: Text(
                       "Esqueceu a senha?",
-                      style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
                     ),
                   ),
                 ],
@@ -167,7 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () {},
                       child: Text(
                         "Clique aqui",
-                        style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
                       ),
                     ),
                   ],

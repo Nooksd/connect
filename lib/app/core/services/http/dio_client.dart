@@ -4,6 +4,7 @@ import 'package:connect/app/core/services/storage/my_local_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:connect/app/core/services/http/my_http_client.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class DioClient implements MyHttpClient {
   final Dio dio = Dio();
@@ -26,7 +27,6 @@ class DioClient implements MyHttpClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           String? accessToken = await storage.get('accessToken');
-
           if (accessToken != null) {
             options.headers['Authorization'] = accessToken;
           }
@@ -47,7 +47,6 @@ class DioClient implements MyHttpClient {
         onError: (DioException error, handler) async {
           if (error.response?.statusCode == 401) {
             String? refreshToken = await storage.get('refreshToken');
-
             if (refreshToken != null) {
               try {
                 final response = await dio.get(
@@ -58,29 +57,30 @@ class DioClient implements MyHttpClient {
                     },
                   ),
                 );
-
                 if (response.statusCode == 200) {
                   final newAccessToken = response.data['accessToken'];
-
                   await storage.set('accessToken', newAccessToken);
 
                   final options = error.requestOptions;
                   options.headers['Authorization'] = newAccessToken;
                   final retryResponse = await dio.fetch(options);
-
                   return handler.resolve(retryResponse);
                 } else {
                   await storage.remove('accessToken');
                   await storage.remove('refreshToken');
                   await storage.remove('user');
-                  return handler.next(error);
+                  Modular.to.navigate('/');
+                  return handler.reject(error);
                 }
               } catch (e) {
-                return handler.next(error);
+                await storage.remove('accessToken');
+                await storage.remove('refreshToken');
+                await storage.remove('user');
+                Modular.to.navigate('/');
+                return handler.reject(error);
               }
             }
           }
-
           return handler.next(error);
         },
       ),
